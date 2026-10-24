@@ -1,0 +1,272 @@
+/* Modern preferences over the complete widget stylesheet. Keep this partial
+ * CSS-only so its cascade can also be probed in memory without a theme build. */
+
+list.boxed-list,
+list.content {
+  background-color: var(--card-bg-color);
+  border: 1px solid var(--gp-control-outline);
+  border-radius: 12px;
+}
+
+list.boxed-list-separate > row {
+  background-color: var(--card-bg-color);
+}
+
+/* AdwActionRow's header already supplies horizontal margins and minimum height.
+ * Restore the native outer inset, without doubling that internal spacing. */
+list.boxed-list > row:not(.expander),
+list.content > row:not(.expander),
+list.boxed-list-separate > row:not(.expander) {
+  padding: 2px;
+  background-image: none;
+  box-shadow: none;
+  color: var(--view-fg-color);
+}
+
+list.boxed-list > row:not(.expander),
+list.content > row:not(.expander) {
+  border-radius: 0;
+}
+
+/* Only the outside corners follow the card; middle rows stay square. Separate
+ * cards and expander headers retain libadwaita's own corner handling. */
+list.boxed-list > row:first-child:not(.expander),
+list.content > row:first-child:not(.expander) {
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+list.boxed-list > row:last-child:not(.expander),
+list.content > row:last-child:not(.expander) {
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+
+list.boxed-list > row:not(.expander):not(:selected),
+list.content > row:not(.expander):not(:selected) {
+  background-color: transparent;
+}
+
+list.boxed-list > row:not(.expander).activatable:not(:disabled):hover,
+list.content > row:not(.expander).activatable:not(:disabled):hover,
+list.boxed-list-separate > row:not(.expander).activatable:not(:disabled):hover {
+  background-color: var(--gp-control-hover-bg);
+}
+
+list.boxed-list > row:not(.expander).activatable:not(:disabled):active,
+list.content > row:not(.expander).activatable:not(:disabled):active,
+list.boxed-list-separate > row:not(.expander).activatable:not(:disabled):active,
+list.boxed-list > row:not(.expander).activatable:not(:disabled).has-open-popup,
+list.content > row:not(.expander).activatable:not(:disabled).has-open-popup,
+list.boxed-list-separate > row:not(.expander).activatable:not(:disabled).has-open-popup {
+  background-color: var(--gp-control-active-bg);
+  box-shadow: none;
+}
+
+list.boxed-list > row:not(.expander):focus-visible,
+list.content > row:not(.expander):focus-visible,
+list.boxed-list-separate > row:not(.expander):focus-visible {
+  outline: 2px solid var(--gp-focus-ring);
+  outline-offset: -2px;
+}
+
+list.boxed-list > row:not(.expander):disabled,
+list.content > row:not(.expander):disabled,
+list.boxed-list-separate > row:not(.expander):disabled {
+  color: var(--gp-muted-fg);
+}
+
+/* Explicit legacy list-label colors must not defeat row foreground inheritance. */
+list.boxed-list > row > .header > .title > label.title,
+list.content > row > .header > .title > label.title,
+list.boxed-list-separate > row > .header > .title > label.title {
+  color: inherit;
+  text-shadow: none;
+}
+
+list.boxed-list > row > .header > .title > label.subtitle,
+list.content > row > .header > .title > label.subtitle,
+list.boxed-list-separate > row > .header > .title > label.subtitle {
+  color: var(--gp-muted-fg);
+  opacity: 1;
+  text-shadow: none;
+}
+
+/* AdwComboRow displays its value in an inline GtkListView, not a button.
+ * Do not make ordinary .view/file lists transparent. */
+row.combo listview.inline,
+row.combo listview.inline:disabled {
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: inherit;
+}
+
+row.combo listview.inline > row {
+  padding: 2px;
+  border: none;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: inherit;
+}
+
+row.combo listview.inline label,
+row.combo listview.inline image {
+  color: inherit;
+  text-shadow: none;
+  -gtk-icon-shadow: none;
+}
+
+/* White controls stand apart from linen preference cards without a brown rim. */
+list.boxed-list button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled),
+list.content button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled),
+list.boxed-list-separate button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled) {
+  background-color: var(--gp-control-bg);
+  border: 1px solid var(--gp-control-outline);
+  box-shadow: none;
+  color: var(--window-fg-color);
+}
+
+list.boxed-list button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled):hover,
+list.content button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled):hover,
+list.boxed-list-separate button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled):hover {
+  background-color: var(--gp-control-hover-bg);
+}
+
+list.boxed-list button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled):active,
+list.content button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled):active,
+list.boxed-list-separate button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled):active {
+  background-color: var(--gp-control-active-bg);
+}
+
+/* Genuine dropdowns, legacy combo buttons, and explicitly dropdown-like menu
+ * buttons only. The specificity also beats Ant's linked/checked button rules. */
+dropdown > button.toggle:not(.suggested-action):not(.destructive-action),
+combobox > box > button.combo:not(.suggested-action):not(.destructive-action),
+.suffixes menubutton > button.toggle:not(.suggested-action):not(.destructive-action),
+menubutton.dropdown > button.toggle:not(.suggested-action):not(.destructive-action) {
+  min-width: 16px;
+  min-height: 24px;
+  padding: 6px 10px;
+  border: 1px solid var(--gp-control-outline);
+  border-radius: 8px;
+  background: var(--gp-control-bg);
+  color: var(--window-fg-color);
+  box-shadow: none;
+  text-shadow: none;
+  -gtk-icon-shadow: none;
+}
+
+dropdown > button.toggle:not(.suggested-action):not(.destructive-action):hover,
+combobox > box > button.combo:not(.suggested-action):not(.destructive-action):hover,
+.suffixes menubutton > button.toggle:not(.suggested-action):not(.destructive-action):hover,
+menubutton.dropdown > button.toggle:not(.suggested-action):not(.destructive-action):hover {
+  background: var(--gp-control-hover-bg);
+}
+
+dropdown > button.toggle:not(.suggested-action):not(.destructive-action):active,
+dropdown > button.toggle:not(.suggested-action):not(.destructive-action):checked,
+combobox > box > button.combo:not(.suggested-action):not(.destructive-action):active,
+combobox > box > button.combo:not(.suggested-action):not(.destructive-action):checked,
+.suffixes menubutton > button.toggle:not(.suggested-action):not(.destructive-action):active,
+.suffixes menubutton > button.toggle:not(.suggested-action):not(.destructive-action):checked,
+menubutton.dropdown > button.toggle:not(.suggested-action):not(.destructive-action):active,
+menubutton.dropdown > button.toggle:not(.suggested-action):not(.destructive-action):checked {
+  background: var(--gp-control-active-bg);
+  color: var(--window-fg-color);
+  box-shadow: none;
+}
+
+dropdown:focus-visible > button,
+dropdown > button:focus-visible,
+combobox > box > button.combo:focus-visible,
+.suffixes menubutton > button:focus-visible,
+menubutton.dropdown > button:focus-visible {
+  outline: 2px solid var(--gp-focus-ring);
+  outline-offset: -2px;
+}
+
+dropdown > button.toggle:not(.suggested-action):not(.destructive-action):disabled,
+combobox > box > button.combo:not(.suggested-action):not(.destructive-action):disabled,
+.suffixes menubutton > button.toggle:not(.suggested-action):not(.destructive-action):disabled,
+menubutton.dropdown > button.toggle:not(.suggested-action):not(.destructive-action):disabled {
+  background: var(--gp-control-bg);
+  color: var(--gp-muted-fg);
+}
+
+dropdown > button label,
+dropdown > button image,
+combobox > box > button.combo cellview,
+.suffixes menubutton > button label,
+.suffixes menubutton > button image,
+menubutton.dropdown > button label,
+menubutton.dropdown > button image {
+  color: inherit;
+}
+
+/* Dropdowns embed a display-only list item inside their button. */
+dropdown > button > box > stack > row {
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  color: inherit;
+}
+
+/* Confine popup styling to these controls, not application file/list views.
+ * .view:not(.inline) also outranks Ant's popover.menu.background .view rule. */
+row.combo popover.menu listview.view:not(.inline) > row,
+dropdown popover.menu listview.view:not(.inline) > row,
+combobox popover.menu modelbutton,
+.suffixes menubutton popover.menu modelbutton,
+menubutton.dropdown popover.menu modelbutton {
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: none;
+  color: var(--view-fg-color);
+  box-shadow: none;
+}
+
+row.combo popover.menu listview.view:not(.inline) > row:hover,
+dropdown popover.menu listview.view:not(.inline) > row:hover,
+combobox popover.menu modelbutton:hover,
+.suffixes menubutton popover.menu modelbutton:hover,
+menubutton.dropdown popover.menu modelbutton:hover {
+  background-color: var(--gp-control-hover-bg);
+}
+
+row.combo popover.menu listview.view:not(.inline) > row:selected,
+dropdown popover.menu listview.view:not(.inline) > row:selected,
+combobox popover.menu modelbutton:selected,
+.suffixes menubutton popover.menu modelbutton:selected,
+menubutton.dropdown popover.menu modelbutton:selected {
+  background-color: var(--gp-selection-bg);
+  color: var(--gp-selection-fg);
+}
+
+row.combo popover.menu listview.view:not(.inline) > row:selected:hover,
+dropdown popover.menu listview.view:not(.inline) > row:selected:hover,
+combobox popover.menu modelbutton:selected:hover,
+.suffixes menubutton popover.menu modelbutton:selected:hover,
+menubutton.dropdown popover.menu modelbutton:selected:hover {
+  background-color: var(--gp-selection-hover-bg);
+}
+
+row.combo popover.menu listview.view:not(.inline) > row:focus-visible,
+dropdown popover.menu listview.view:not(.inline) > row:focus-visible,
+combobox popover.menu modelbutton:focus-visible,
+.suffixes menubutton popover.menu modelbutton:focus-visible,
+menubutton.dropdown popover.menu modelbutton:focus-visible {
+  outline: 2px solid var(--gp-focus-ring);
+  outline-offset: -2px;
+}
+
+row.combo popover.menu listview.view:not(.inline) > row label,
+row.combo popover.menu listview.view:not(.inline) > row image,
+dropdown popover.menu listview.view:not(.inline) > row label,
+dropdown popover.menu listview.view:not(.inline) > row image,
+combobox popover.menu modelbutton cellview,
+.suffixes menubutton popover.menu modelbutton label,
+menubutton.dropdown popover.menu modelbutton label {
+  color: inherit;
+}

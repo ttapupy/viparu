@@ -1,0 +1,6 @@
+# Optional locally unpacked Sass compiler and scratch build output.
+.build-tools/
+gnome-shell/.build/
+dist/
+__pycache__/
+*.pyc

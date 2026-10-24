@@ -1,0 +1,6 @@
+// The Yaru dock references two extension-owned Metro highlight images that are
+// absent from this theme. Use a palette-derived focus cue instead of broken URLs.
+#dashtodockContainer .metro.focused .overview-icon {
+  background-color: transparentize($gp-accent-bg, .75);
+  box-shadow: inset 0 0 0 2px $gp-accent-on-dark;
+}

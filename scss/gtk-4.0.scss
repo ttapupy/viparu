@@ -1,0 +1,11 @@
+// Fixed hybrid appearance for GTK 4, with local widget and GNOME adapters.
+@import 'gtk-colors';
+@import 'gtk-public-colors';
+@import 'gtk-4.0/drawing';
+@import 'gtk-4.0/common';
+@import 'gtk-4.0/widgets';
+@import 'gtk-4.0/gnome';
+@import 'libadwaita';
+@import 'controls';
+@import 'preferences';
+@import 'window-controls';

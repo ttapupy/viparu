@@ -1,0 +1,70 @@
+// Shared semantic roles. Raw palette colors are defined in color-palette.json.
+@import '../color-palette';
+
+// Large light surfaces share the file view's pale background.
+$gp-view-bg: mix($white, $linen, 60%);
+$gp-window-bg: $gp-view-bg;
+$gp-card-bg: $linen;
+$gp-fg: $almost_black;
+$gp-muted-fg: $dorado;
+$gp-border: rgba($english_walnut, 0.3);
+$gp-window-border-color: $carmine;
+$gp-window-border-width: 1px;
+$gp-window-content-padding: 0px;
+$gp-window-border-inset: 0px;
+$gp-window-border-radius: 15px;
+$gp-window-border-backdrop-color: rgba(mix($gp-window-border-color, $almost_black, 70%), 0.65);
+
+// Window control dots have separate colors; glyphs appear on hover or focus.
+$gp-window-minimize-bg: $tulip_tree;
+$gp-window-maximize-bg: $cascade;
+$gp-window-close-bg: $carmine;
+$gp-window-control-fg: $almost_black;
+$gp-window-control-backdrop-bg: $bronco;
+
+// Keep the header dark; configure the sidebar surface independently.
+$gp-header-bg: $almost_black;
+$gp-sidebar-bg: mix($chathams_blue, $almost_black, 60%);
+$gp-sidebar-fg: $linen;
+$gp-sidebar-hover-bg: mix($silk_blue, $gp-sidebar-bg, 85%);
+$gp-sidebar-font-weight: 500;
+$gp-chrome-fg:mix($pale_spring_bud, $linen, 60%);
+$gp-chrome-muted-fg: $bronco;
+$gp-chrome-hover-bg: mix($dark_coral, $gp-header-bg, 35%);
+
+// Accents and states. The folder color is reserved, not an icon theme override.
+$gp-accent-bg: $bondi_blue;
+$gp-accent-fg: $white;
+$gp-suggested-hover-bg: mix($gp-accent-bg, $almost_black, 75%);
+$gp-suggested-active-bg: mix($gp-accent-bg, $almost_black, 60%);
+$gp-accent-on-light: $chathams_blue;
+$gp-accent-on-dark: $light_orange;
+$gp-selection-bg: $warm_orange;
+$gp-selection-hover-bg: $pale_spring_bud;
+$gp-selection-fg: $almost_black;
+$gp-focus-ring: $carmine;
+$gp-control-bg: $white;
+$gp-control-border: rgba($chathams_blue, 0.25);
+// Blue control accents are independent of warm menu and list selections.
+$gp-control-accent-bg: $silk_blue;
+$gp-control-accent-fg: $white;
+$gp-control-accent-hover-bg: $petrol_blue;
+$gp-hover-bg: mix($light_orange, $gp-view-bg, 25%);
+$gp-active-bg: mix($faded_orange, $gp-view-bg, 35%);
+$gp-control-idle-bg: mix($dorado, $gp-view-bg, 20%);
+$gp-warning: $light_orange;
+$gp-error: $carmine;
+$gp-destructive-bg: $brownish_red;
+$gp-destructive-on-dark: mix($carmine, $linen, 75%);
+$gp-success: $cascade;
+$gp-folder-color: $cascade;
+
+// Shell surfaces and accents follow the application sidebar and selection roles.
+$gp-shell-bg: $gp-sidebar-bg;
+$gp-shell-surface-bg: $gp-sidebar-bg;
+$gp-shell-raised-bg: lighten($gp-shell-surface-bg, 6%);
+$gp-shell-hover-bg: $gp-sidebar-hover-bg;
+$gp-shell-accent-bg: $gp-selection-bg;
+$gp-shell-accent-fg: $gp-selection-fg;
+$gp-shell-fg: $linen;
+$gp-shell-muted-fg: $bronco;

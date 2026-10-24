@@ -1,0 +1,184 @@
+// Palette-painted controls: no fixed-color bitmap assets or scale factors.
+switch {
+  min-width: 40px;
+  min-height: 20px;
+  padding: 2px;
+  border: none;
+  border-radius: 999px;
+  background-color: var(--gp-control-idle-bg);
+  box-shadow: none;
+  color: transparent;
+  font-size: 0;
+
+  &, &:hover, &:active, &:checked, &:backdrop, &:disabled, &:checked:disabled {
+    background-image: none;
+    slider { background-image: none; }
+  }
+
+  &:checked {
+    background-color: var(--gp-control-accent-bg);
+    box-shadow: none;
+  }
+
+  slider {
+    min-width: 20px;
+    min-height: 20px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--gp-control-thumb-bg);
+    box-shadow: 0 1px 2px #{rgba($almost_black, 0.2)};
+  }
+
+  image {
+    color: transparent;
+    -gtk-icon-source: none;
+  }
+
+  &:disabled { opacity: 0.45; }
+  &:focus-visible {
+    outline: 2px solid var(--gp-focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+checkbutton { border-spacing: 6px; }
+
+check, radio,
+checkbutton > check, checkbutton > radio {
+  min-width: 16px;
+  min-height: 16px;
+  padding: 0;
+  border: 2px solid var(--gp-control-outline);
+  background-color: var(--view-bg-color);
+  background-image: none;
+  box-shadow: none;
+  color: var(--gp-selection-fg);
+  -gtk-icon-source: none;
+  -gtk-icon-shadow: none;
+
+  &:checked, &:indeterminate {
+    border-color: var(--gp-selection-bg);
+    background-color: var(--gp-selection-bg);
+  }
+
+  &:indeterminate {
+    -gtk-icon-source: -gtk-icontheme("list-remove-symbolic");
+    -gtk-icon-transform: none;
+  }
+
+  &:disabled { opacity: 0.45; }
+  &:focus-visible {
+    outline: 2px solid var(--gp-focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+checkbutton:focus-visible > check,
+checkbutton:focus-visible > radio {
+  outline: 2px solid var(--gp-focus-ring);
+  outline-offset: 2px;
+}
+
+check, checkbutton > check {
+  border-radius: 4px;
+  &:checked { -gtk-icon-source: -gtk-icontheme("object-select-symbolic"); }
+}
+
+radio, checkbutton > radio {
+  border-radius: 50%;
+  &:checked {
+    -gtk-icon-source: -gtk-icontheme("media-record-symbolic");
+    -gtk-icon-transform: scale(0.5);
+  }
+}
+
+.linked:not(.vertical) { border-spacing: 6px; }
+.linked:not(.vertical) > button {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+// Text choices need stable geometry; icon toggles must retain their compact size.
+.linked > button:not(.suggested-action):not(.destructive-action),
+button.toggle.text-button:not(.suggested-action):not(.destructive-action) {
+  border: 1px solid var(--gp-control-outline);
+  border-radius: 7px;
+  padding: 6px 12px;
+  background-color: var(--gp-control-bg);
+  color: var(--window-fg-color);
+  box-shadow: none;
+
+  label, image { &, &:backdrop { color: inherit; } }
+}
+
+// Also override old user-theme metrics when only the libadwaita layer is loaded.
+headerbar button.toggle.image-button:not(.text-button),
+.titlebar button.toggle.image-button:not(.text-button) {
+  padding: 4px;
+  min-width: 24px;
+  min-height: 24px;
+  border: none;
+}
+
+// A list's explicit label color otherwise wins over button foreground inheritance.
+.linked > button:not(.suggested-action):not(.destructive-action):checked,
+button.toggle:not(.suggested-action):not(.destructive-action):checked {
+  &, &:backdrop {
+    background-color: var(--gp-control-accent-bg);
+    background-image: none;
+    color: var(--gp-control-accent-fg);
+    border-color: var(--gp-control-accent-bg);
+    box-shadow: none;
+    text-shadow: none;
+    -gtk-icon-shadow: none;
+  }
+
+  label, image {
+    &, &:backdrop { color: inherit; }
+  }
+
+  &:hover {
+    background-color: var(--gp-control-accent-hover-bg);
+    border-color: var(--gp-control-accent-hover-bg);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--gp-focus-ring);
+    outline-offset: 2px;
+  }
+  &:disabled { opacity: 0.45; }
+}
+
+// Keep palette selections legible in file lists and grid views too.
+listview.view > row:selected,
+gridview.view > child:selected {
+  &, &:backdrop {
+    background-color: var(--gp-selection-bg);
+    color: var(--gp-selection-fg);
+    border-radius: 6px;
+  }
+  label, image { &, &:backdrop { color: inherit; } }
+  &:hover { background-color: var(--gp-selection-hover-bg); }
+  &:focus-visible {
+    outline: 2px solid var(--gp-focus-ring);
+    outline-offset: -2px;
+  }
+}
+
+button.suggested-action, button.destructive-action {
+  label, image { &, &:backdrop { color: inherit; } }
+}
+
+button.suggested-action:not(.flat):not(:disabled) {
+  &:hover {
+    background-color: $gp-suggested-hover-bg;
+    // Replace libadwaita's pale hover overlay with a distinct palette color.
+    background-image: none;
+  }
+
+  &:active, &.keyboard-activating {
+    background-color: $gp-suggested-active-bg;
+    background-image: none;
+  }
+}

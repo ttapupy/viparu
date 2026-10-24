@@ -1,0 +1,117 @@
+// Replace the upstream palette/default-colors/colors layer BEFORE drawing and
+// widgets derive their state colors. Do not import that layer afterwards.
+
+// Upstream named palette compatibility, entirely from Gundam-Pastel colors.
+$blue_1: mix($gp-accent-bg, $gp-shell-fg, 40%);
+$blue_2: $bondi_blue;
+$blue_3: $french_blue;
+$blue_4: $gp-accent-bg;
+$blue_5: $chathams_blue;
+$green_1: mix($gp-success, $gp-shell-fg, 40%);
+$green_2: mix($gp-success, $gp-shell-fg, 70%);
+$green_3: $gp-success;
+$green_4: mix($gp-success, $gp-shell-bg, 80%);
+$green_5: mix($gp-success, $gp-shell-bg, 60%);
+$yellow_1: mix($gp-warning, $gp-shell-fg, 40%);
+$yellow_2: mix($gp-warning, $gp-shell-fg, 70%);
+$yellow_3: $gp-warning;
+$yellow_4: $warm_orange;
+$yellow_5: $faded_orange;
+$orange_1: mix($gp-warning, $gp-shell-fg, 70%);
+$orange_2: $gp-warning;
+$orange_3: $warm_orange;
+$orange_4: $faded_orange;
+$orange_5: $dark_coral;
+$red_1: mix($gp-error, $gp-shell-fg, 70%);
+$red_2: $gp-error;
+$red_3: $dark_coral;
+$red_4: $gp-destructive-bg;
+$red_5: mix($gp-destructive-bg, $gp-shell-bg, 80%);
+// No unrelated purple is introduced for otherwise unused upstream aliases.
+$purple_1: $desert_sand;
+$purple_2: $rose_taupe;
+$purple_3: $dorado;
+$purple_4: $gp-shell-raised-bg;
+$purple_5: $gp-shell-surface-bg;
+$brown_1: $desert_sand;
+$brown_2: $sorrel_brown;
+$brown_3: $rose_taupe;
+$brown_4: $gp-shell-raised-bg;
+$brown_5: $gp-shell-surface-bg;
+$light_1: $gp-shell-fg;
+$light_2: $desert_sand;
+$light_3: $sorrel_brown;
+$light_4: $silver;
+$light_5: $gp-shell-muted-fg;
+$dark_1: $dorado;
+$dark_2: $rose_taupe;
+$dark_3: $gp-shell-raised-bg;
+$dark_4: $gp-shell-surface-bg;
+$dark_5: $gp-shell-bg;
+
+// Named/default colors, including readable accents on dark surfaces.
+$_base_color_dark: $gp-shell-bg;
+$_base_color_light: $gp-shell-fg;
+$accent_color: $gp-accent-on-dark;
+$destructive_bg_color: $gp-destructive-bg;
+$destructive_fg_color: $gp-accent-fg;
+$destructive_color: $gp-error;
+$success_bg_color: mix($gp-success, $gp-shell-bg, 45%);
+$success_fg_color: $gp-shell-fg;
+$success_color: $gp-success;
+$warning_bg_color: $gp-warning;
+$warning_fg_color: $gp-shell-bg;
+$warning_color: $gp-warning;
+$error_bg_color: $gp-destructive-bg;
+$error_fg_color: $gp-accent-fg;
+$error_color: $gp-error;
+$link_color: $gp-accent-on-dark;
+$link_visited_color: transparentize($link_color, .6);
+$background_mix_factor: 9%;
+$shadow_color: rgba($gp-shell-bg, .2);
+$text_shadow_color: rgba($gp-shell-bg, .2);
+$border_opacity: .9;
+$focus_border_opacity: .2;
+
+// Base surfaces: every downstream widget calculation sees these values.
+$base_color: $gp-shell-bg;
+$bg_color: $gp-shell-surface-bg;
+$fg_color: $gp-shell-fg;
+$osd_fg_color: $gp-shell-fg;
+$osd_bg_color: $gp-shell-surface-bg;
+$system_base_color: $gp-shell-bg;
+$system_fg_color: $gp-shell-fg;
+$panel_bg_color: $gp-shell-bg;
+$panel_fg_color: $gp-shell-fg;
+$panel_border_color: transparent;
+$card_bg_color: $gp-shell-raised-bg;
+$card_shadow_color: transparent;
+$card_shadow_border_color: transparent;
+
+// Derived colors (the same interface as upstream _colors.scss).
+$borders_color: transparentize($fg_color, $border_opacity);
+$outer_borders_color: lighten($bg_color, 5%);
+$osd_borders_color: transparentize($osd_fg_color, .9);
+$osd_outer_borders_color: transparentize($osd_fg_color, .98);
+$system_bg_color: $gp-shell-surface-bg;
+$system_borders_color: transparentize($system_fg_color, .9);
+$system_insensitive_fg_color: mix($gp-shell-muted-fg, $system_bg_color, 65%);
+$system_overlay_bg_color: $gp-shell-surface-bg;
+$insensitive_fg_color: mix($gp-shell-muted-fg, $bg_color, 65%);
+$insensitive_bg_color: mix($bg_color, $base_color, 60%);
+$insensitive_borders_color: mix($borders_color, $base_color, 60%);
+$checked_bg_color: $gp-shell-raised-bg;
+$checked_fg_color: $fg_color;
+// Match the apps' visible petrol hover instead of the old neutral brown tint.
+$hover_bg_color: $gp-shell-hover-bg;
+$hover_fg_color: $fg_color;
+$active_bg_color: $gp-shell-hover-bg;
+$active_fg_color: $fg_color;
+$accent_borders_color: lighten($gp-accent-bg, 30%);
+$card_insensitive_fg_color: $gp-shell-muted-fg;
+
+// Variables consumed only by the unmodified Yaru dock/tweaks layer.
+$yaru_panel_bg_color: $panel_bg_color;
+$yaru_panel_fg_color: $panel_fg_color;
+$warning_caption_bg_color: mix($warning_color, $bg_color, 10%);
+$warning_caption_color: $warning_color;

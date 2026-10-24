@@ -1,0 +1,872 @@
+@define-color accent_color #15547E;
+@define-color accent_bg_color #0296C1;
+@define-color accent_fg_color #FFFFFF;
+@define-color window_bg_color #fcf9f4;
+@define-color window_fg_color #26181D;
+@define-color view_bg_color #fcf9f4;
+@define-color view_fg_color #26181D;
+@define-color headerbar_bg_color #26181D;
+@define-color headerbar_fg_color #f3eec9;
+@define-color headerbar_backdrop_color #26181D;
+@define-color headerbar_shade_color rgba(38, 24, 29, 0.2);
+@define-color headerbar_darker_shade_color rgba(38, 24, 29, 0.3);
+@define-color sidebar_bg_color #1c3c57;
+@define-color sidebar_fg_color #F7F1E3;
+@define-color sidebar_backdrop_color #1c3c57;
+@define-color sidebar_shade_color rgba(38, 24, 29, 0.2);
+@define-color secondary_sidebar_bg_color #1c3c57;
+@define-color secondary_sidebar_fg_color #F7F1E3;
+@define-color secondary_sidebar_backdrop_color #1c3c57;
+@define-color secondary_sidebar_shade_color rgba(38, 24, 29, 0.2);
+@define-color card_bg_color #F7F1E3;
+@define-color card_fg_color #26181D;
+@define-color card_shade_color rgba(61, 44, 37, 0.3);
+@define-color dialog_bg_color #fcf9f4;
+@define-color dialog_fg_color #26181D;
+@define-color popover_bg_color #fcf9f4;
+@define-color popover_fg_color #26181D;
+@define-color popover_shade_color rgba(61, 44, 37, 0.3);
+@define-color thumbnail_bg_color #F7F1E3;
+@define-color thumbnail_fg_color #26181D;
+@define-color shade_color rgba(61, 44, 37, 0.3);
+@define-color scrollbar_outline_color #fcf9f4;
+@define-color destructive_bg_color #95362A;
+@define-color destructive_fg_color #FFFFFF;
+@define-color destructive_color #95362A;
+@define-color warning_bg_color #F9A657;
+@define-color warning_fg_color #26181D;
+@define-color warning_color #b15906;
+@define-color error_bg_color #E75441;
+@define-color error_fg_color #26181D;
+@define-color error_color #95362A;
+@define-color success_bg_color #89A59E;
+@define-color success_fg_color #26181D;
+@define-color success_color #405550;
+:root {
+  --accent-color: #15547E;
+  --accent-bg-color: #0296C1;
+  --accent-fg-color: #FFFFFF;
+  --window-bg-color: #fcf9f4;
+  --window-fg-color: #26181D;
+  --view-bg-color: #fcf9f4;
+  --view-fg-color: #26181D;
+  --headerbar-bg-color: #26181D;
+  --headerbar-fg-color: #f3eec9;
+  --headerbar-backdrop-color: #26181D;
+  --headerbar-shade-color: rgba(38, 24, 29, 0.2);
+  --headerbar-darker-shade-color: rgba(38, 24, 29, 0.3);
+  --sidebar-bg-color: #1c3c57;
+  --sidebar-fg-color: #F7F1E3;
+  --sidebar-backdrop-color: #1c3c57;
+  --sidebar-shade-color: rgba(38, 24, 29, 0.2);
+  --secondary-sidebar-bg-color: #1c3c57;
+  --secondary-sidebar-fg-color: #F7F1E3;
+  --secondary-sidebar-backdrop-color: #1c3c57;
+  --secondary-sidebar-shade-color: rgba(38, 24, 29, 0.2);
+  --card-bg-color: #F7F1E3;
+  --card-fg-color: #26181D;
+  --card-shade-color: rgba(61, 44, 37, 0.3);
+  --dialog-bg-color: #fcf9f4;
+  --dialog-fg-color: #26181D;
+  --popover-bg-color: #fcf9f4;
+  --popover-fg-color: #26181D;
+  --popover-shade-color: rgba(61, 44, 37, 0.3);
+  --thumbnail-bg-color: #F7F1E3;
+  --thumbnail-fg-color: #26181D;
+  --shade-color: rgba(61, 44, 37, 0.3);
+  --scrollbar-outline-color: #fcf9f4;
+  --destructive-bg-color: #95362A;
+  --destructive-fg-color: #FFFFFF;
+  --destructive-color: #95362A;
+  --warning-bg-color: #F9A657;
+  --warning-fg-color: #26181D;
+  --warning-color: #b15906;
+  --error-bg-color: #E75441;
+  --error-fg-color: #26181D;
+  --error-color: #95362A;
+  --success-bg-color: #89A59E;
+  --success-fg-color: #26181D;
+  --success-color: #405550;
+  --gp-folder-color: #89A59E;
+  --gp-control-hover-bg: #fbe4cd;
+  --gp-control-active-bg: #f5d6bc;
+  --gp-muted-fg: #6C5A5B;
+  --gp-selection-bg: #F4A35A;
+  --gp-selection-fg: #26181D;
+  --gp-selection-hover-bg: #F1ECB8;
+  --gp-focus-ring: #E75441;
+  --gp-control-bg: #FFFFFF;
+  --gp-control-idle-bg: #dfd9d5;
+  --gp-control-outline: rgba(21, 84, 126, 0.25);
+  --gp-control-thumb-bg: #FFFFFF;
+  --gp-control-accent-bg: #3E8DCD;
+  --gp-control-accent-fg: #FFFFFF;
+  --gp-control-accent-hover-bg: #0080A9;
+}
+
+headerbar, .titlebar {
+  background-color: #26181D;
+  background-image: none;
+  color: #f3eec9;
+  --accent-color: #F9A657;
+  --destructive-color: #eb7b6a;
+  --gp-control-hover-bg: #602f29;
+  --gp-control-active-bg: #165167;
+  --gp-muted-fg: #AEA69E;
+  --gp-control-bg: #3b2d2e;
+  --gp-control-idle-bg: #4f433f;
+  --gp-control-outline: rgba(243, 238, 201, 0.5);
+  --window-bg-color: #26181D;
+  --window-fg-color: #f3eec9;
+  --view-bg-color: #26181D;
+  --view-fg-color: #f3eec9;
+  --card-bg-color: #602f29;
+  --card-fg-color: #f3eec9;
+}
+
+headerbar:backdrop, .titlebar:backdrop {
+  background-color: #26181D;
+  color: #f3eec9;
+}
+
+headerbar label, headerbar label:backdrop, headerbar image, headerbar image:backdrop, .titlebar label, .titlebar label:backdrop, .titlebar image, .titlebar image:backdrop {
+  color: inherit;
+}
+
+headerbar button:not(.suggested-action):not(.destructive-action), headerbar button:not(.suggested-action):not(.destructive-action):backdrop, .titlebar button:not(.suggested-action):not(.destructive-action), .titlebar button:not(.suggested-action):not(.destructive-action):backdrop {
+  background-image: none;
+  background-color: transparent;
+  color: var(--window-fg-color);
+  box-shadow: none;
+}
+
+headerbar button:not(.suggested-action):not(.destructive-action):hover, .titlebar button:not(.suggested-action):not(.destructive-action):hover {
+  background-color: var(--gp-control-hover-bg);
+}
+
+headerbar button:not(.suggested-action):not(.destructive-action):active, headerbar button:not(.suggested-action):not(.destructive-action):checked, .titlebar button:not(.suggested-action):not(.destructive-action):active, .titlebar button:not(.suggested-action):not(.destructive-action):checked {
+  background-color: var(--gp-control-active-bg);
+}
+
+headerbar button:not(.suggested-action):not(.destructive-action):disabled, .titlebar button:not(.suggested-action):not(.destructive-action):disabled {
+  color: var(--gp-muted-fg);
+}
+
+headerbar entry, .titlebar entry {
+  background-color: var(--card-bg-color);
+  color: var(--window-fg-color);
+  caret-color: var(--window-fg-color);
+}
+
+.sidebar, .sidebar-pane, .navigation-sidebar, placessidebar, stacksidebar,
+.nautilus-window .sidebar {
+  background-color: #1c3c57;
+  background-image: none;
+  color: #f3eec9;
+  --accent-color: #F9A657;
+  --destructive-color: #eb7b6a;
+  --gp-control-hover-bg: #602f29;
+  --gp-control-active-bg: #106587;
+  --gp-muted-fg: #AEA69E;
+  --gp-control-bg: #324e62;
+  --gp-control-idle-bg: #47606e;
+  --gp-control-outline: rgba(243, 238, 201, 0.5);
+  --window-bg-color: #1c3c57;
+  --window-fg-color: #f3eec9;
+  --view-bg-color: #1c3c57;
+  --view-fg-color: #f3eec9;
+  --card-bg-color: #602f29;
+  --card-fg-color: #f3eec9;
+  --window-fg-color: #F7F1E3;
+  --view-fg-color: #F7F1E3;
+  --card-fg-color: #F7F1E3;
+  --gp-control-hover-bg: #3981bb;
+}
+
+.sidebar:backdrop, .sidebar-pane:backdrop, .navigation-sidebar:backdrop, placessidebar:backdrop, stacksidebar:backdrop,
+.nautilus-window .sidebar:backdrop {
+  background-color: #1c3c57;
+  color: #f3eec9;
+}
+
+.sidebar, .sidebar:backdrop, .sidebar-pane, .sidebar-pane:backdrop, .navigation-sidebar, .navigation-sidebar:backdrop, placessidebar, placessidebar:backdrop, stacksidebar, stacksidebar:backdrop,
+.nautilus-window .sidebar,
+.nautilus-window .sidebar:backdrop {
+  color: #F7F1E3;
+}
+
+.sidebar list, .sidebar list:backdrop, .sidebar listview, .sidebar listview:backdrop, .sidebar viewport, .sidebar viewport:backdrop,
+.sidebar-pane list,
+.sidebar-pane list:backdrop, .sidebar-pane listview, .sidebar-pane listview:backdrop,
+placessidebar list,
+placessidebar list:backdrop, stacksidebar list, stacksidebar list:backdrop {
+  background-color: transparent;
+  color: #F7F1E3;
+}
+
+.sidebar row, .sidebar-pane row, .navigation-sidebar row,
+placessidebar row, stacksidebar row {
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+.sidebar row, .sidebar row:backdrop, .sidebar-pane row, .sidebar-pane row:backdrop, .navigation-sidebar row, .navigation-sidebar row:backdrop,
+placessidebar row,
+placessidebar row:backdrop, stacksidebar row, stacksidebar row:backdrop {
+  color: #F7F1E3;
+  background-color: transparent;
+}
+
+.sidebar row label, .sidebar row label:backdrop, .sidebar row image, .sidebar row image:backdrop, .sidebar-pane row label, .sidebar-pane row label:backdrop, .sidebar-pane row image, .sidebar-pane row image:backdrop, .navigation-sidebar row label, .navigation-sidebar row label:backdrop, .navigation-sidebar row image, .navigation-sidebar row image:backdrop,
+placessidebar row label,
+placessidebar row label:backdrop,
+placessidebar row image,
+placessidebar row image:backdrop, stacksidebar row label, stacksidebar row label:backdrop, stacksidebar row image, stacksidebar row image:backdrop {
+  color: inherit;
+}
+
+.sidebar row:hover, .sidebar-pane row:hover, .navigation-sidebar row:hover,
+placessidebar row:hover, stacksidebar row:hover {
+  background-color: #3981bb;
+  box-shadow: none;
+}
+
+.sidebar row:focus-visible, .sidebar-pane row:focus-visible, .navigation-sidebar row:focus-visible,
+placessidebar row:focus-visible, stacksidebar row:focus-visible {
+  outline: 2px solid #E75441;
+  outline-offset: -2px;
+}
+
+.sidebar row:selected, .sidebar row:selected:backdrop, .sidebar-pane row:selected, .sidebar-pane row:selected:backdrop, .navigation-sidebar row:selected, .navigation-sidebar row:selected:backdrop,
+placessidebar row:selected,
+placessidebar row:selected:backdrop, stacksidebar row:selected, stacksidebar row:selected:backdrop {
+  background-color: #F4A35A;
+  color: #26181D;
+  box-shadow: none;
+}
+
+.sidebar row:selected label, .sidebar row:selected image, .sidebar row:selected:backdrop label, .sidebar row:selected:backdrop image, .sidebar-pane row:selected label, .sidebar-pane row:selected image, .sidebar-pane row:selected:backdrop label, .sidebar-pane row:selected:backdrop image, .navigation-sidebar row:selected label, .navigation-sidebar row:selected image, .navigation-sidebar row:selected:backdrop label, .navigation-sidebar row:selected:backdrop image,
+placessidebar row:selected label,
+placessidebar row:selected image,
+placessidebar row:selected:backdrop label,
+placessidebar row:selected:backdrop image, stacksidebar row:selected label, stacksidebar row:selected image, stacksidebar row:selected:backdrop label, stacksidebar row:selected:backdrop image {
+  color: inherit;
+}
+
+.sidebar row:selected:hover, .sidebar row:selected:backdrop:hover, .sidebar-pane row:selected:hover, .sidebar-pane row:selected:backdrop:hover, .navigation-sidebar row:selected:hover, .navigation-sidebar row:selected:backdrop:hover,
+placessidebar row:selected:hover,
+placessidebar row:selected:backdrop:hover, stacksidebar row:selected:hover, stacksidebar row:selected:backdrop:hover {
+  background-color: #F1ECB8;
+}
+
+.sidebar row:selected:focus-visible, .sidebar row:selected:backdrop:focus-visible, .sidebar-pane row:selected:focus-visible, .sidebar-pane row:selected:backdrop:focus-visible, .navigation-sidebar row:selected:focus-visible, .navigation-sidebar row:selected:backdrop:focus-visible,
+placessidebar row:selected:focus-visible,
+placessidebar row:selected:backdrop:focus-visible, stacksidebar row:selected:focus-visible, stacksidebar row:selected:backdrop:focus-visible {
+  outline-color: #15547E;
+}
+
+popover {
+  color: #26181D;
+  --accent-color: #15547E;
+  --destructive-color: #95362A;
+  --gp-control-hover-bg: #fbe4cd;
+  --gp-control-active-bg: #f5d6bc;
+  --gp-muted-fg: #6C5A5B;
+  --gp-control-bg: #FFFFFF;
+  --gp-control-idle-bg: #dfd9d5;
+  --gp-control-outline: rgba(21, 84, 126, 0.25);
+  --view-bg-color: #fcf9f4;
+  --view-fg-color: #26181D;
+  --window-bg-color: #fcf9f4;
+  --window-fg-color: #26181D;
+  --card-bg-color: #F7F1E3;
+  --card-fg-color: #26181D;
+}
+
+window.csd:not(.maximized):not(.fullscreen) {
+  border: none;
+  padding: 0px;
+  outline: 1px solid #E75441;
+  outline-offset: -1px;
+  --window-radius: 15px;
+  border-radius: 15px;
+}
+
+window.csd:not(.maximized):not(.fullscreen):backdrop {
+  outline-color: rgba(173, 66, 54, 0.65);
+}
+
+switch {
+  min-width: 40px;
+  min-height: 20px;
+  padding: 2px;
+  border: none;
+  border-radius: 999px;
+  background-color: var(--gp-control-idle-bg);
+  box-shadow: none;
+  color: transparent;
+  font-size: 0;
+}
+
+switch, switch:hover, switch:active, switch:checked, switch:backdrop, switch:disabled, switch:checked:disabled {
+  background-image: none;
+}
+
+switch slider, switch:hover slider, switch:active slider, switch:checked slider, switch:backdrop slider, switch:disabled slider, switch:checked:disabled slider {
+  background-image: none;
+}
+
+switch:checked {
+  background-color: var(--gp-control-accent-bg);
+  box-shadow: none;
+}
+
+switch slider {
+  min-width: 20px;
+  min-height: 20px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--gp-control-thumb-bg);
+  box-shadow: 0 1px 2px rgba(38, 24, 29, 0.2);
+}
+
+switch image {
+  color: transparent;
+  -gtk-icon-source: none;
+}
+
+switch:disabled {
+  opacity: 0.45;
+}
+
+switch:focus-visible {
+  outline: 2px solid var(--gp-focus-ring);
+  outline-offset: 2px;
+}
+
+checkbutton {
+  border-spacing: 6px;
+}
+
+check, radio,
+checkbutton > check, checkbutton > radio {
+  min-width: 16px;
+  min-height: 16px;
+  padding: 0;
+  border: 2px solid var(--gp-control-outline);
+  background-color: var(--view-bg-color);
+  background-image: none;
+  box-shadow: none;
+  color: var(--gp-selection-fg);
+  -gtk-icon-source: none;
+  -gtk-icon-shadow: none;
+}
+
+check:checked, check:indeterminate, radio:checked, radio:indeterminate,
+checkbutton > check:checked,
+checkbutton > check:indeterminate, checkbutton > radio:checked, checkbutton > radio:indeterminate {
+  border-color: var(--gp-selection-bg);
+  background-color: var(--gp-selection-bg);
+}
+
+check:indeterminate, radio:indeterminate,
+checkbutton > check:indeterminate, checkbutton > radio:indeterminate {
+  -gtk-icon-source: -gtk-icontheme("list-remove-symbolic");
+  -gtk-icon-transform: none;
+}
+
+check:disabled, radio:disabled,
+checkbutton > check:disabled, checkbutton > radio:disabled {
+  opacity: 0.45;
+}
+
+check:focus-visible, radio:focus-visible,
+checkbutton > check:focus-visible, checkbutton > radio:focus-visible {
+  outline: 2px solid var(--gp-focus-ring);
+  outline-offset: 2px;
+}
+
+checkbutton:focus-visible > check,
+checkbutton:focus-visible > radio {
+  outline: 2px solid var(--gp-focus-ring);
+  outline-offset: 2px;
+}
+
+check, checkbutton > check {
+  border-radius: 4px;
+}
+
+check:checked, checkbutton > check:checked {
+  -gtk-icon-source: -gtk-icontheme("object-select-symbolic");
+}
+
+radio, checkbutton > radio {
+  border-radius: 50%;
+}
+
+radio:checked, checkbutton > radio:checked {
+  -gtk-icon-source: -gtk-icontheme("media-record-symbolic");
+  -gtk-icon-transform: scale(0.5);
+}
+
+.linked:not(.vertical) {
+  border-spacing: 6px;
+}
+
+.linked:not(.vertical) > button {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.linked > button:not(.suggested-action):not(.destructive-action),
+button.toggle.text-button:not(.suggested-action):not(.destructive-action) {
+  border: 1px solid var(--gp-control-outline);
+  border-radius: 7px;
+  padding: 6px 12px;
+  background-color: var(--gp-control-bg);
+  color: var(--window-fg-color);
+  box-shadow: none;
+}
+
+.linked > button:not(.suggested-action):not(.destructive-action) label, .linked > button:not(.suggested-action):not(.destructive-action) label:backdrop, .linked > button:not(.suggested-action):not(.destructive-action) image, .linked > button:not(.suggested-action):not(.destructive-action) image:backdrop,
+button.toggle.text-button:not(.suggested-action):not(.destructive-action) label,
+button.toggle.text-button:not(.suggested-action):not(.destructive-action) label:backdrop,
+button.toggle.text-button:not(.suggested-action):not(.destructive-action) image,
+button.toggle.text-button:not(.suggested-action):not(.destructive-action) image:backdrop {
+  color: inherit;
+}
+
+headerbar button.toggle.image-button:not(.text-button),
+.titlebar button.toggle.image-button:not(.text-button) {
+  padding: 4px;
+  min-width: 24px;
+  min-height: 24px;
+  border: none;
+}
+
+.linked > button:not(.suggested-action):not(.destructive-action):checked, .linked > button:not(.suggested-action):not(.destructive-action):checked:backdrop,
+button.toggle:not(.suggested-action):not(.destructive-action):checked,
+button.toggle:not(.suggested-action):not(.destructive-action):checked:backdrop {
+  background-color: var(--gp-control-accent-bg);
+  background-image: none;
+  color: var(--gp-control-accent-fg);
+  border-color: var(--gp-control-accent-bg);
+  box-shadow: none;
+  text-shadow: none;
+  -gtk-icon-shadow: none;
+}
+
+.linked > button:not(.suggested-action):not(.destructive-action):checked label, .linked > button:not(.suggested-action):not(.destructive-action):checked label:backdrop, .linked > button:not(.suggested-action):not(.destructive-action):checked image, .linked > button:not(.suggested-action):not(.destructive-action):checked image:backdrop,
+button.toggle:not(.suggested-action):not(.destructive-action):checked label,
+button.toggle:not(.suggested-action):not(.destructive-action):checked label:backdrop,
+button.toggle:not(.suggested-action):not(.destructive-action):checked image,
+button.toggle:not(.suggested-action):not(.destructive-action):checked image:backdrop {
+  color: inherit;
+}
+
+.linked > button:not(.suggested-action):not(.destructive-action):checked:hover,
+button.toggle:not(.suggested-action):not(.destructive-action):checked:hover {
+  background-color: var(--gp-control-accent-hover-bg);
+  border-color: var(--gp-control-accent-hover-bg);
+}
+
+.linked > button:not(.suggested-action):not(.destructive-action):checked:focus-visible,
+button.toggle:not(.suggested-action):not(.destructive-action):checked:focus-visible {
+  outline: 2px solid var(--gp-focus-ring);
+  outline-offset: 2px;
+}
+
+.linked > button:not(.suggested-action):not(.destructive-action):checked:disabled,
+button.toggle:not(.suggested-action):not(.destructive-action):checked:disabled {
+  opacity: 0.45;
+}
+
+listview.view > row:selected, listview.view > row:selected:backdrop,
+gridview.view > child:selected,
+gridview.view > child:selected:backdrop {
+  background-color: var(--gp-selection-bg);
+  color: var(--gp-selection-fg);
+  border-radius: 6px;
+}
+
+listview.view > row:selected label, listview.view > row:selected label:backdrop, listview.view > row:selected image, listview.view > row:selected image:backdrop,
+gridview.view > child:selected label,
+gridview.view > child:selected label:backdrop,
+gridview.view > child:selected image,
+gridview.view > child:selected image:backdrop {
+  color: inherit;
+}
+
+listview.view > row:selected:hover,
+gridview.view > child:selected:hover {
+  background-color: var(--gp-selection-hover-bg);
+}
+
+listview.view > row:selected:focus-visible,
+gridview.view > child:selected:focus-visible {
+  outline: 2px solid var(--gp-focus-ring);
+  outline-offset: -2px;
+}
+
+button.suggested-action label, button.suggested-action label:backdrop, button.suggested-action image, button.suggested-action image:backdrop, button.destructive-action label, button.destructive-action label:backdrop, button.destructive-action image, button.destructive-action image:backdrop {
+  color: inherit;
+}
+
+button.suggested-action:not(.flat):not(:disabled):hover {
+  background-color: #0b7798;
+  background-image: none;
+}
+
+button.suggested-action:not(.flat):not(:disabled):active, button.suggested-action:not(.flat):not(:disabled).keyboard-activating {
+  background-color: #10647f;
+  background-image: none;
+}
+
+/* Modern preferences over the legacy Ant user stylesheet. Keep this partial
+ * CSS-only so its cascade can also be probed in memory without a theme build. */
+list.boxed-list,
+list.content {
+  background-color: var(--card-bg-color);
+  border: 1px solid var(--gp-control-outline);
+  border-radius: 12px;
+}
+
+list.boxed-list-separate > row {
+  background-color: var(--card-bg-color);
+}
+
+/* AdwActionRow's header already supplies horizontal margins and minimum height.
+ * Restore the native outer inset, without doubling that internal spacing. */
+list.boxed-list > row:not(.expander),
+list.content > row:not(.expander),
+list.boxed-list-separate > row:not(.expander) {
+  padding: 2px;
+  background-image: none;
+  box-shadow: none;
+  color: var(--view-fg-color);
+}
+
+list.boxed-list > row:not(.expander),
+list.content > row:not(.expander) {
+  border-radius: 0;
+}
+
+/* Only the outside corners follow the card; middle rows stay square. Separate
+ * cards and expander headers retain libadwaita's own corner handling. */
+list.boxed-list > row:first-child:not(.expander),
+list.content > row:first-child:not(.expander) {
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+list.boxed-list > row:last-child:not(.expander),
+list.content > row:last-child:not(.expander) {
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+
+list.boxed-list > row:not(.expander):not(:selected),
+list.content > row:not(.expander):not(:selected) {
+  background-color: transparent;
+}
+
+list.boxed-list > row:not(.expander).activatable:not(:disabled):hover,
+list.content > row:not(.expander).activatable:not(:disabled):hover,
+list.boxed-list-separate > row:not(.expander).activatable:not(:disabled):hover {
+  background-color: var(--gp-control-hover-bg);
+}
+
+list.boxed-list > row:not(.expander).activatable:not(:disabled):active,
+list.content > row:not(.expander).activatable:not(:disabled):active,
+list.boxed-list-separate > row:not(.expander).activatable:not(:disabled):active,
+list.boxed-list > row:not(.expander).activatable:not(:disabled).has-open-popup,
+list.content > row:not(.expander).activatable:not(:disabled).has-open-popup,
+list.boxed-list-separate > row:not(.expander).activatable:not(:disabled).has-open-popup {
+  background-color: var(--gp-control-active-bg);
+  box-shadow: none;
+}
+
+list.boxed-list > row:not(.expander):focus-visible,
+list.content > row:not(.expander):focus-visible,
+list.boxed-list-separate > row:not(.expander):focus-visible {
+  outline: 2px solid var(--gp-focus-ring);
+  outline-offset: -2px;
+}
+
+list.boxed-list > row:not(.expander):disabled,
+list.content > row:not(.expander):disabled,
+list.boxed-list-separate > row:not(.expander):disabled {
+  color: var(--gp-muted-fg);
+}
+
+/* Explicit legacy list-label colors must not defeat row foreground inheritance. */
+list.boxed-list > row > .header > .title > label.title,
+list.content > row > .header > .title > label.title,
+list.boxed-list-separate > row > .header > .title > label.title {
+  color: inherit;
+  text-shadow: none;
+}
+
+list.boxed-list > row > .header > .title > label.subtitle,
+list.content > row > .header > .title > label.subtitle,
+list.boxed-list-separate > row > .header > .title > label.subtitle {
+  color: var(--gp-muted-fg);
+  opacity: 1;
+  text-shadow: none;
+}
+
+/* AdwComboRow displays its value in an inline GtkListView, not a button.
+ * Do not make ordinary .view/file lists transparent. */
+row.combo listview.inline,
+row.combo listview.inline:disabled {
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: inherit;
+}
+
+row.combo listview.inline > row {
+  padding: 2px;
+  border: none;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: inherit;
+}
+
+row.combo listview.inline label,
+row.combo listview.inline image {
+  color: inherit;
+  text-shadow: none;
+  -gtk-icon-shadow: none;
+}
+
+/* White controls stand apart from linen preference cards without a brown rim. */
+list.boxed-list button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled),
+list.content button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled),
+list.boxed-list-separate button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled) {
+  background-color: var(--gp-control-bg);
+  border: 1px solid var(--gp-control-outline);
+  box-shadow: none;
+  color: var(--window-fg-color);
+}
+
+list.boxed-list button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled):hover,
+list.content button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled):hover,
+list.boxed-list-separate button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled):hover {
+  background-color: var(--gp-control-hover-bg);
+}
+
+list.boxed-list button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled):active,
+list.content button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled):active,
+list.boxed-list-separate button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled):active {
+  background-color: var(--gp-control-active-bg);
+}
+
+/* Genuine dropdowns, legacy combo buttons, and explicitly dropdown-like menu
+ * buttons only. The specificity also beats Ant's linked/checked button rules. */
+dropdown > button.toggle:not(.suggested-action):not(.destructive-action),
+combobox > box > button.combo:not(.suggested-action):not(.destructive-action),
+.suffixes menubutton > button.toggle:not(.suggested-action):not(.destructive-action),
+menubutton.dropdown > button.toggle:not(.suggested-action):not(.destructive-action) {
+  min-width: 16px;
+  min-height: 24px;
+  padding: 6px 10px;
+  border: 1px solid var(--gp-control-outline);
+  border-radius: 8px;
+  background: var(--gp-control-bg);
+  color: var(--window-fg-color);
+  box-shadow: none;
+  text-shadow: none;
+  -gtk-icon-shadow: none;
+}
+
+dropdown > button.toggle:not(.suggested-action):not(.destructive-action):hover,
+combobox > box > button.combo:not(.suggested-action):not(.destructive-action):hover,
+.suffixes menubutton > button.toggle:not(.suggested-action):not(.destructive-action):hover,
+menubutton.dropdown > button.toggle:not(.suggested-action):not(.destructive-action):hover {
+  background: var(--gp-control-hover-bg);
+}
+
+dropdown > button.toggle:not(.suggested-action):not(.destructive-action):active,
+dropdown > button.toggle:not(.suggested-action):not(.destructive-action):checked,
+combobox > box > button.combo:not(.suggested-action):not(.destructive-action):active,
+combobox > box > button.combo:not(.suggested-action):not(.destructive-action):checked,
+.suffixes menubutton > button.toggle:not(.suggested-action):not(.destructive-action):active,
+.suffixes menubutton > button.toggle:not(.suggested-action):not(.destructive-action):checked,
+menubutton.dropdown > button.toggle:not(.suggested-action):not(.destructive-action):active,
+menubutton.dropdown > button.toggle:not(.suggested-action):not(.destructive-action):checked {
+  background: var(--gp-control-active-bg);
+  color: var(--window-fg-color);
+  box-shadow: none;
+}
+
+dropdown:focus-visible > button,
+dropdown > button:focus-visible,
+combobox > box > button.combo:focus-visible,
+.suffixes menubutton > button:focus-visible,
+menubutton.dropdown > button:focus-visible {
+  outline: 2px solid var(--gp-focus-ring);
+  outline-offset: -2px;
+}
+
+dropdown > button.toggle:not(.suggested-action):not(.destructive-action):disabled,
+combobox > box > button.combo:not(.suggested-action):not(.destructive-action):disabled,
+.suffixes menubutton > button.toggle:not(.suggested-action):not(.destructive-action):disabled,
+menubutton.dropdown > button.toggle:not(.suggested-action):not(.destructive-action):disabled {
+  background: var(--gp-control-bg);
+  color: var(--gp-muted-fg);
+}
+
+dropdown > button label,
+dropdown > button image,
+combobox > box > button.combo cellview,
+.suffixes menubutton > button label,
+.suffixes menubutton > button image,
+menubutton.dropdown > button label,
+menubutton.dropdown > button image {
+  color: inherit;
+}
+
+/* Dropdowns embed a display-only list item inside their button. */
+dropdown > button > box > stack > row {
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  color: inherit;
+}
+
+/* Confine popup styling to these controls, not application file/list views.
+ * .view:not(.inline) also outranks Ant's popover.menu.background .view rule. */
+row.combo popover.menu listview.view:not(.inline) > row,
+dropdown popover.menu listview.view:not(.inline) > row,
+combobox popover.menu modelbutton,
+.suffixes menubutton popover.menu modelbutton,
+menubutton.dropdown popover.menu modelbutton {
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: none;
+  color: var(--view-fg-color);
+  box-shadow: none;
+}
+
+row.combo popover.menu listview.view:not(.inline) > row:hover,
+dropdown popover.menu listview.view:not(.inline) > row:hover,
+combobox popover.menu modelbutton:hover,
+.suffixes menubutton popover.menu modelbutton:hover,
+menubutton.dropdown popover.menu modelbutton:hover {
+  background-color: var(--gp-control-hover-bg);
+}
+
+row.combo popover.menu listview.view:not(.inline) > row:selected,
+dropdown popover.menu listview.view:not(.inline) > row:selected,
+combobox popover.menu modelbutton:selected,
+.suffixes menubutton popover.menu modelbutton:selected,
+menubutton.dropdown popover.menu modelbutton:selected {
+  background-color: var(--gp-selection-bg);
+  color: var(--gp-selection-fg);
+}
+
+row.combo popover.menu listview.view:not(.inline) > row:selected:hover,
+dropdown popover.menu listview.view:not(.inline) > row:selected:hover,
+combobox popover.menu modelbutton:selected:hover,
+.suffixes menubutton popover.menu modelbutton:selected:hover,
+menubutton.dropdown popover.menu modelbutton:selected:hover {
+  background-color: var(--gp-selection-hover-bg);
+}
+
+row.combo popover.menu listview.view:not(.inline) > row:focus-visible,
+dropdown popover.menu listview.view:not(.inline) > row:focus-visible,
+combobox popover.menu modelbutton:focus-visible,
+.suffixes menubutton popover.menu modelbutton:focus-visible,
+menubutton.dropdown popover.menu modelbutton:focus-visible {
+  outline: 2px solid var(--gp-focus-ring);
+  outline-offset: -2px;
+}
+
+row.combo popover.menu listview.view:not(.inline) > row label,
+row.combo popover.menu listview.view:not(.inline) > row image,
+dropdown popover.menu listview.view:not(.inline) > row label,
+dropdown popover.menu listview.view:not(.inline) > row image,
+combobox popover.menu modelbutton cellview,
+.suffixes menubutton popover.menu modelbutton label,
+menubutton.dropdown popover.menu modelbutton label {
+  color: inherit;
+}
+
+windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize {
+  --gp-window-control-bg: #E2B93E;
+}
+
+windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize > image {
+  -gtk-icon-source: -gtk-recolor(url("../assets/window-minimize-symbolic.svg"));
+}
+
+windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize {
+  --gp-window-control-bg: #89A59E;
+}
+
+windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize > image {
+  -gtk-icon-source: -gtk-recolor(url("../assets/window-maximize-symbolic.svg"));
+}
+
+windowcontrols > button:not(.suggested-action):not(.destructive-action).close {
+  --gp-window-control-bg: #E75441;
+}
+
+windowcontrols > button:not(.suggested-action):not(.destructive-action).close > image {
+  -gtk-icon-source: -gtk-recolor(url("../assets/window-close-symbolic.svg"));
+}
+
+windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize, windowcontrols > button:not(.suggested-action):not(.destructive-action).close {
+  min-width: 24px;
+  min-height: 24px;
+  padding: 5px;
+  margin: 0;
+  border: none;
+}
+
+windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize, windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize:hover, windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize:active, windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize:backdrop, windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize:backdrop:hover, windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize:disabled, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize:hover, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize:active, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize:backdrop, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize:backdrop:hover, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize:disabled, windowcontrols > button:not(.suggested-action):not(.destructive-action).close, windowcontrols > button:not(.suggested-action):not(.destructive-action).close:hover, windowcontrols > button:not(.suggested-action):not(.destructive-action).close:active, windowcontrols > button:not(.suggested-action):not(.destructive-action).close:backdrop, windowcontrols > button:not(.suggested-action):not(.destructive-action).close:backdrop:hover, windowcontrols > button:not(.suggested-action):not(.destructive-action).close:disabled {
+  background: none;
+  box-shadow: none;
+  -gtk-icon-shadow: none;
+  -gtk-icon-filter: none;
+}
+
+windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize > image, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize > image, windowcontrols > button:not(.suggested-action):not(.destructive-action).close > image {
+  padding: 4px;
+  background-color: transparent;
+  background-image: radial-gradient(circle closest-side, var(--gp-window-control-bg) 92%, transparent 100%);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 18px 18px;
+  border-radius: 100%;
+  box-shadow: none;
+  color: transparent;
+  -gtk-icon-shadow: none;
+  -gtk-icon-filter: none;
+}
+
+windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize:hover > image, windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize:active > image, windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize:focus-visible > image, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize:hover > image, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize:active > image, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize:focus-visible > image, windowcontrols > button:not(.suggested-action):not(.destructive-action).close:hover > image, windowcontrols > button:not(.suggested-action):not(.destructive-action).close:active > image, windowcontrols > button:not(.suggested-action):not(.destructive-action).close:focus-visible > image {
+  color: #26181D;
+}
+
+windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize:backdrop, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize:backdrop, windowcontrols > button:not(.suggested-action):not(.destructive-action).close:backdrop {
+  --gp-window-control-bg: #AEA69E;
+}
+
+windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize:disabled > image, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize:disabled > image, windowcontrols > button:not(.suggested-action):not(.destructive-action).close:disabled > image {
+  color: transparent;
+}
+
+.default-decoration windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize, .default-decoration windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize, .default-decoration windowcontrols > button:not(.suggested-action):not(.destructive-action).close {
+  min-width: 22px;
+  min-height: 22px;
+  padding: 4px;
+}
+
+.default-decoration windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize > image, .default-decoration windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize > image, .default-decoration windowcontrols > button:not(.suggested-action):not(.destructive-action).close > image {
+  padding: 3px;
+}
