@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 NAME = "Viparu"
 FILES = (
-    "README.md", "USAGE.md", "DEVELOPMENT.md", "THIRD_PARTY.md", "LICENSE",
+    "README.md", "USAGE.md", "DEVELOPMENT.md", "THIRD_PARTY.md", "LICENSE", "screenshot.png",
     "index.theme", "install-gtk.sh", "color-palette.json", "color-palette.scss",
 )
 DIRECTORIES = (

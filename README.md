@@ -5,8 +5,7 @@ dark headers and petrol-blue sidebars with warm orange selections, blue controls
 and colored window dots.
 It has the same output when you set Light or Dark mode in Gnome. This is intentional.
 
-The theme keeps native header and control sizing. A thin yellow window outline
-becomes darker, without transparency, when the window is inactive.
+![Viparu theme screenshot](screenshot.png)
 
 ## Quick start
 
