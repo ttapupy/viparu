@@ -9,13 +9,14 @@ and `gtk/src/default/gtk-4.0` in that revision. Copyright notices are retained.
 License texts and upstream authors are provided under `licenses/yaru/` at the
 project root. Upstream Yaru is based on GNOME's Adwaita/GTK styles.
 
-Vintage entry points import the color definitions, apply `_yaru-colors.scss`,
-then import Yaru's drawing, widget and tweak layers. Project-specific chrome,
-header sizing and window-control artwork are applied last. There is no external
+Viparu entry points import the color definitions, apply `_yaru-colors.scss`,
+then import Yaru's drawing, widget and tweak layers. Project-specific colors,
+chrome and window-control artwork are applied last; native header sizing is
+retained. There is no external
 source path or runtime dependency on an installed Yaru theme.
 
 The included rendered assets and their SVG sources belong to the same snapshot.
 The build copies only images actually referenced by the generated GTK CSS into
 the corresponding `gtk-3.0/assets/` and `gtk-4.0/assets/` runtime directories.
 Some embedded artwork retains upstream colors; the main UI colors come from
-Vintage's semantic roles.
+Viparu's semantic roles.

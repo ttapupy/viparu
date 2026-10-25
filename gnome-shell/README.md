@@ -1,8 +1,9 @@
-# Vintage-Pop-Art-Unified — GNOME Shell component
+# Viparu — GNOME Shell component
 
 `gnome-shell.scss` builds the standalone `gnome-shell.css` loaded by the User
 Themes extension. This component is based on the included GNOME Shell and Yaru
-sources, not on Ant-Bloody's Shell styles. See [source credits](../THIRD_PARTY.md).
+sources. See [source credits](../THIRD_PARTY.md) and the
+[user installation guide](../USAGE.md#2-enable-the-gnome-shell-component-optional).
 
 ## Building
 

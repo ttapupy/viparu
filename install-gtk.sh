@@ -1,20 +1,24 @@
 #!/usr/bin/env bash
-# Explicit per-user GTK 4 installation. Never run automatically from the build.
+# Explicit per-user Viparu GTK 4 installation. Never run automatically from the build.
 set -euo pipefail
 
 usage() {
     cat <<'EOF'
 Usage: ./install-gtk.sh [--link|--copy|--update|--uninstall|--status|--help]
 
+Install or remove Viparu's GTK 4/libadwaita user layer.
+
   --link       Link both user CSS files to libadwaita.css, plus assets (first-run default).
   --copy       Install a self-contained copy of those three entries instead.
   --update     Refresh this installation, retaining its mode (also the default).
   --uninstall  Remove managed entries and restore the original backups.
   --status     Show the active installation without changing anything.
+  --help       Show this help message.
 
 Existing overrides are backed up before the first installation. Later updates
 and uninstall refuse to overwrite entries changed by the user or another tool.
 GTK 3, GNOME Shell, settings.ini and GSettings are not changed. Do not use sudo.
+See USAGE.md for installation, updates, backups and removal.
 EOF
 }
 
@@ -37,7 +41,7 @@ case "$action" in
     *) usage >&2; exit 2 ;;
 esac
 
-for tool in readlink cp mv ln cmp diff mktemp; do
+for tool in cat cmp cp diff dirname ln mkdir mktemp mv readlink rm rmdir; do
     command -v "$tool" >/dev/null || fail "Required command not found: $tool"
 done
 
@@ -48,7 +52,12 @@ state_home=${XDG_STATE_HOME:-"$HOME/.local/state"}
 [[ "$config_home" = /* && "$state_home" = /* ]] || fail 'XDG directories must be absolute paths.'
 [[ ! -L "$config_home/gtk-4.0" ]] || fail 'gtk-4.0 is a directory symlink; resolve that installation first.'
 config_dir=$(readlink -m -- "$config_home/gtk-4.0")
-state_dir=$(readlink -m -- "$state_home/vintage-pop-art-unified/gtk-4.0")
+state_dir=$(readlink -m -- "$state_home/viparu/gtk-4.0")
+# Reuse earlier ownership records and original backups, including for read-only status.
+legacy_state_dir=$(readlink -m -- "$state_home/vintage-pop-art-unified/gtk-4.0")
+if ! exists "$state_dir" && exists "$legacy_state_dir"; then
+    state_dir=$legacy_state_dir
+fi
 entries=(gtk.css gtk-dark.css assets)
 managed=false
 if [[ -d "$state_dir/installed" && -f "$state_dir/config-dir" ]]; then

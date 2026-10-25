@@ -1,9 +1,9 @@
 # Third-party source provenance
 
-Vintage-Pop-Art-Unified is a derivative theme. Recoloring, source reorganization
+Viparu is a derivative theme. Recoloring, source reorganization
 and project-specific controls do not remove upstream authorship or license
-requirements. The package contains the sources and artwork it needs; it does not
-require a separately installed Ant-Bloody or Yaru theme.
+requirements. The package includes the sources and artwork it needs; no
+separately installed upstream theme is required.
 
 ## Current GTK foundation: Yaru
 
@@ -34,31 +34,17 @@ metadata are retained in the vendored source directories.
 The shared JSON palette and semantic roles, `_yaru-colors.scss` mapping, hybrid
 chrome, stronger suggested-button state colors,
 colored window-control dots, local SVG glyphs and build tooling are project work.
-These layers are imported around the Yaru foundation instead of replacing it
-with Ant-derived widget rules. The build does not install user CSS or modify
-desktop settings. The separate, explicitly invoked `install-gtk.sh` links or
+These layers are imported around the Yaru foundation. The build does not install
+user CSS or modify desktop settings. The separate, explicitly invoked `install-gtk.sh` links or
 copies the targeted `gtk-4.0/libadwaita.css` user layer and artwork into the user's
 GTK 4 configuration, with backups and uninstall support; it does not install the
 full Yaru widget stylesheet there or change GSettings. Header/control sizing is
 left to Yaru for traditional GTK themes and to libadwaita for the user layer.
 
-## Historical Ant-Bloody foundation
-
-Earlier revisions, including the initial `be2d11e` snapshot, used substantial GTK
-code from [Ant-Bloody](https://github.com/EliverLara/Ant-Bloody) by
-[EliverLara](https://github.com/EliverLara). Ant-Bloody credits
-[evopop-gtk-theme](https://github.com/solus-project/evopop-gtk-theme) as its foundation.
-That historical code retains its GPL-3.0 provenance and license in Git history.
-
-The current GTK entry points no longer import Ant-Bloody. Its widget source trees,
-fixed-color control bitmaps and legacy toolbar/preferences workarounds have been
-removed. Ant-Bloody remains a visual reference. Project-owned palette/chrome
-work developed during the earlier iteration is retained in the new Yaru-based
-layers; the history and authorship of the previous foundation are not concealed.
 
 ## GNOME Shell and Yaru Shell layers
 
-The existing Shell component is based on GNOME Shell and Yaru, not Ant-Bloody:
+The Shell component includes these GNOME Shell and Yaru source layers:
 
 - `gnome-shell/upstream/theme/gnome-shell-sass/`: GNOME Shell sources and their
   [`COPYING`](gnome-shell/upstream/theme/gnome-shell-sass/COPYING).
@@ -67,8 +53,8 @@ The existing Shell component is based on GNOME Shell and Yaru, not Ant-Bloody:
 - Referenced `gnome-shell/src/*.svg`: Yaru artwork with retained embedded metadata.
 
 Shell palette preprocessing writes generated copies without modifying those
-vendored inputs. This GTK rebase does not replace the Shell snapshot or claim
-that all three components came from the same upstream revision.
+vendored inputs. The GTK and Shell snapshots are maintained separately; they are
+not claimed to originate from the same upstream revision.
 
 ## Contrast and color utilities
 

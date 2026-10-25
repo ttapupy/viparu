@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Build the self-contained Yaru-based GTK/Shell theme without activating it."""
+"""Build the self-contained Viparu GTK/Shell theme without activating it."""
 
+import argparse
 import os
 import re
 import shutil
@@ -56,6 +57,8 @@ def collect_assets(stylesheets):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.parse_args()
     try:
         compiler, environment = compiler_command()
         generate()
@@ -64,7 +67,7 @@ def main():
             cwd=ROOT, check=True, timeout=30,
         )
         # All compilation and asset resolution must succeed before publication.
-        with tempfile.TemporaryDirectory(prefix="vintage-pop-art-unified-") as directory:
+        with tempfile.TemporaryDirectory(prefix="viparu-") as directory:
             staging = Path(directory)
             styles = {
                 "gtk-3.0/gtk.css": "scss/gtk-3.0.scss",
