@@ -12,11 +12,11 @@ becomes darker, without transparency, when the window is inactive.
 
 1. Extract the release archive into `~/.themes/`, keeping its **Viparu** folder.
    `~/.themes/Viparu/index.theme` must exist directly inside that folder.
-2. **Enable the GNOME Shell component (optional):** enable the **User Themes**
+2. **Theming GNOME Shell:** enable the **User Themes**
    extension and select **Viparu** as the Shell theme in GNOME Tweaks.
-3. In **GNOME Tweaks → Appearance**, select **Viparu** for **Legacy Applications**.
+3. **Theming Legacy apps: **In **GNOME Tweaks → Appearance**, select **Viparu** for **Legacy Applications**.
    Labels may differ between GNOME versions.
-4. To style GTK 4/libadwaita applications too, open a terminal in the theme
+4. **Theming native  GTK 4/libadwaita apps (Nautilus, Settings, etc.):** To style these applications too, open a terminal in the theme
    directory and run **as your desktop user, without sudo**:
 
    ```sh

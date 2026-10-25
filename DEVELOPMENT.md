@@ -136,7 +136,22 @@ The packaging command neither installs the theme nor runs test suites.
 
 ## Developer checks
 
-`tests/` and `gnome-shell/test_prepare_sources.py` contain developer regression
-checks, not installation requirements. They are never invoked by builds or
-packaging. Their presence is not a claim that all expectations have been audited
-for the current theme or that every supported application has been tested.
+Run the project and Shell regression checks separately:
+
+```sh
+python3 -B -m unittest discover -s tests -v
+python3 -B -m unittest discover -s gnome-shell -p 'test_*.py' -v
+```
+
+GTK rendering checks require PyGObject, GTK 4.16+, libadwaita and a working display;
+they are reported as skipped when those prerequisites are unavailable. No test
+shows a window or writes desktop settings. Native libadwaita fixtures mask the
+installed user CSS at process-local provider priority, and compare geometry with
+and without `libadwaita.css` instead of pinning toolkit-specific padding values.
+Traditional GTK checks use `gtk.css` separately. Color checks follow the exported
+semantic roles, allowing the palette to change without restoring old colors.
+
+The checks cover control states, header backgrounds and native layout, window
+outlines/artwork, CSS parsing, assets, palette generation, packaging and installer
+backup continuity. They are never invoked by builds or packaging. Passing these
+checks does not replace manual application/Shell compatibility checks.

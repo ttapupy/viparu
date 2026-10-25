@@ -38,7 +38,7 @@ class ThemeTests(unittest.TestCase):
             for offset in (1, 3, 5)
         ]
         expected = "#{:02x}{:02x}{:02x}".format(*channels)
-        for name in ("gtk.css", "gtk-dark.css"):
+        for name in ("gtk.css", "gtk-dark.css", "libadwaita.css"):
             css = (GTK / name).read_text(encoding="utf-8")
             for role in ("window_bg_color", "view_bg_color", "dialog_bg_color", "popover_bg_color"):
                 with self.subTest(stylesheet=name, role=role):
@@ -64,7 +64,8 @@ class ThemeTests(unittest.TestCase):
 
     def test_gtk_assets_exist_and_are_local(self):
         for version in ("gtk-3.0", "gtk-4.0"):
-            for name in ("gtk.css", "gtk-dark.css"):
+            for name in (("gtk.css", "gtk-dark.css", "libadwaita.css")
+                         if version == "gtk-4.0" else ("gtk.css", "gtk-dark.css")):
                 path = ROOT / version / name
                 for url in asset_urls(path):
                     with self.subTest(version=version, stylesheet=name, url=url):
@@ -96,7 +97,7 @@ class ThemeTests(unittest.TestCase):
                         settings.get_property("gtk-enable-animations"))
         settings.set_property("gtk-enable-animations", False)
         display = Gdk.Display.get_default()
-        for stylesheet in ("gtk.css",):
+        for stylesheet in ("gtk.css", "libadwaita.css"):
             provider = Gtk.CssProvider()
             provider.load_from_path(str(GTK / stylesheet))
             Gtk.StyleContext.add_provider_for_display(
@@ -209,7 +210,7 @@ class ThemeTests(unittest.TestCase):
         clear_flags = Gtk.StateFlags.NORMAL
         for state in states:
             clear_flags |= state
-        for stylesheet in ("gtk.css",):
+        for stylesheet in ("gtk.css", "libadwaita.css"):
             css = (GTK / stylesheet).read_text(encoding="utf-8")
             backdrop = re.findall(r"--gp-window-control-bg: ([^;]+);", css)[-1]
             provider = Gtk.CssProvider()
@@ -263,7 +264,7 @@ class ThemeTests(unittest.TestCase):
             self.skipTest("GTK 4 PyGObject is not available")
         if (Gtk.get_major_version(), Gtk.get_minor_version()) < (4, 16):
             self.skipTest("CSS variables require GTK 4.16 or newer")
-        for name in ("gtk.css", "gtk-dark.css"):
+        for name in ("gtk.css", "gtk-dark.css", "libadwaita.css"):
             with self.subTest(stylesheet=name):
                 errors = []
                 provider = Gtk.CssProvider()
