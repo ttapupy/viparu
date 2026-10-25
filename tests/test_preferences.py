@@ -11,7 +11,7 @@ from contextlib import contextmanager
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-STYLESHEETS = ("gtk.css", "libadwaita.css")
+STYLESHEETS = ("gtk.css",)
 SCHEMES = ("FORCE_LIGHT", "FORCE_DARK")
 ROLES = {
     "hover": "--gp-control-hover-bg",

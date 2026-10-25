@@ -1,8 +1,17 @@
-// Fixed hybrid appearance for GTK 3.24; all sources and assets are local.
-@import 'gtk-colors';
-@import 'gtk-public-colors';
-@import 'gtk-3.0/drawing';
-@import 'gtk-3.0/common';
-@import 'gtk-3.0/widgets';
-@import 'gtk-3.0/gnome';
-@import 'gtk-3.0/overrides';
+// Yaru GTK 3 foundation; no user CSS installation or external source path.
+@import 'roles';
+$variant: 'light';
+$contrast: 'normal';
+$accent_bg_color: $gp-accent-bg;
+$accent_fg_color: $gp-accent-fg;
+@import 'yaru/gtk-3.0/colors';
+@import 'yaru-colors';
+@import 'yaru/gtk-3.0/drawing';
+@import 'yaru/gtk-3.0/common';
+@import 'yaru/gtk-3.0/apps';
+@import 'yaru/gtk-3.0/tweaks';
+@import 'yaru/gtk-3.0/colors-public';
+@import 'yaru/gtk-3.0/libhandy/Adwaita-base';
+@import 'gtk3-chrome';
+
+@import 'controls';

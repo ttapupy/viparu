@@ -1,6 +1,11 @@
-// Optional libadwaita color and control layer, without the complete widget theme.
+// User override layer: keep libadwaita's own widget geometry and interaction rules.
+// Never import Yaru's complete widget stylesheet at GTK user priority.
 @import 'roles';
-@import 'libadwaita';
+@import 'gtk4-chrome';
 @import 'controls';
-@import 'preferences';
 @import 'window-controls';
+
+switch {
+  --accent-bg-color: #{$gp-control-accent-bg};
+  --accent-fg-color: #{$gp-control-accent-fg};
+}

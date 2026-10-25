@@ -1,0 +1,77 @@
+// GTK 3 uses build-time roles rather than GTK 4 custom properties.
+headerbar, .titlebar {
+  &, &:backdrop {
+    background-color: $gp-header-bg;
+    background-image: none;
+    color: $gp-chrome-fg;
+  }
+  label, image { &, &:backdrop { color: inherit; } }
+  button:not(.suggested-action):not(.destructive-action) {
+    &, &:backdrop {
+      background-image: none;
+      background-color: transparent;
+      color: $gp-chrome-fg;
+      box-shadow: none;
+    }
+    &:hover { background-color: $gp-chrome-hover-bg; }
+    &:active, &:checked { background-color: mix($gp-accent-bg, $gp-header-bg, 45%); }
+    &:disabled { color: $gp-chrome-muted-fg; }
+  }
+}
+
+.sidebar, placessidebar, stacksidebar, .navigation-sidebar {
+  &, &:backdrop { background-color: $gp-sidebar-bg; color: $gp-sidebar-fg; }
+  list, viewport { &, &:backdrop { background-color: transparent; } }
+  row {
+    font-weight: $gp-sidebar-font-weight;
+    &, &:backdrop { background-color: transparent; color: $gp-sidebar-fg; }
+    label, image { &, &:backdrop { color: inherit; } }
+    &:hover { background-color: $gp-sidebar-hover-bg; }
+    &:selected, &:selected:backdrop {
+      background-color: $gp-selection-bg;
+      color: $gp-selection-fg;
+      &:hover { background-color: $gp-selection-hover-bg; }
+    }
+  }
+}
+
+window.csd:not(.maximized):not(.fullscreen) {
+  border-radius: $gp-window-border-radius;
+  decoration {
+    border: $gp-window-border-width solid $gp-window-border-color;
+    border-radius: $gp-window-border-radius;
+    &:backdrop { border-color: $gp-window-border-backdrop-color; }
+  }
+  headerbar { border-radius: $gp-window-border-radius $gp-window-border-radius 0 0; }
+}
+
+button.titlebutton:not(.appmenu):not(.suggested-action):not(.destructive-action) {
+  &.minimize, &.maximize, &.unmaximize, &.close {
+    &, &:hover, &:active, &:backdrop, &:backdrop:hover {
+      background-color: transparent;
+      box-shadow: none;
+    }
+    > image { color: transparent; -gtk-icon-shadow: none; }
+    &:hover > image, &:active > image, &:focus > image { color: $gp-window-control-fg; }
+  }
+  @each $action, $background, $icon in (minimize, $gp-window-minimize-bg, minimize),
+                                       (maximize, $gp-window-maximize-bg, maximize),
+                                       (unmaximize, $gp-window-maximize-bg, maximize),
+                                       (close, $gp-window-close-bg, close) {
+    &.#{$action} {
+      &, &:hover, &:active {
+        background-image: radial-gradient(circle closest-side, $background 92%, transparent 100%);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 18px 18px;
+      }
+      &:backdrop {
+        background-image: radial-gradient(circle closest-side, $gp-window-control-backdrop-bg 92%, transparent 100%);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 18px 18px;
+      }
+      > image { -gtk-icon-source: -gtk-recolor(url("assets/window-#{$icon}-symbolic.svg")); }
+    }
+  }
+}

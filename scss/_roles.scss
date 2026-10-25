@@ -8,12 +8,13 @@ $gp-card-bg: $linen;
 $gp-fg: $almost_black;
 $gp-muted-fg: $dorado;
 $gp-border: rgba($english_walnut, 0.3);
-$gp-window-border-color: $carmine;
+$gp-window-border-color: $tulip_tree;
 $gp-window-border-width: 1px;
 $gp-window-content-padding: 0px;
 $gp-window-border-inset: 0px;
 $gp-window-border-radius: 15px;
-$gp-window-border-backdrop-color: rgba(mix($gp-window-border-color, $almost_black, 70%), 0.65);
+// Opaque so the outline has the same color over light content and dark sidebars.
+$gp-window-border-backdrop-color: mix($gp-window-border-color, $almost_black, 70%);
 
 // Window control dots have separate colors; glyphs appear on hover or focus.
 $gp-window-minimize-bg: $tulip_tree;
@@ -24,6 +25,7 @@ $gp-window-control-backdrop-bg: $bronco;
 
 // Keep the header dark; configure the sidebar surface independently.
 $gp-header-bg: $almost_black;
+
 $gp-sidebar-bg: mix($chathams_blue, $almost_black, 60%);
 $gp-sidebar-fg: $linen;
 $gp-sidebar-hover-bg: mix($silk_blue, $gp-sidebar-bg, 85%);

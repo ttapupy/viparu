@@ -1,4 +1,4 @@
-// Keep native-sized hit targets; paint palette dots independently of the SVG glyphs.
+// Replace only Yaru's window-control artwork, not its native button geometry.
 windowcontrols > button:not(.suggested-action):not(.destructive-action) {
   @each $action, $background in (minimize, $gp-window-minimize-bg),
                                  (maximize, $gp-window-maximize-bg),
@@ -6,28 +6,19 @@ windowcontrols > button:not(.suggested-action):not(.destructive-action) {
     &.#{$action} {
       --gp-window-control-bg: #{$background};
       > image {
-        -gtk-icon-source: -gtk-recolor(url("../assets/window-#{$action}-symbolic.svg"));
+        -gtk-icon-source: -gtk-recolor(url("assets/window-#{$action}-symbolic.svg"));
       }
     }
   }
 
   &.minimize, &.maximize, &.close {
-    // Keep the same metrics with both the complete theme and the libadwaita layer.
-    min-width: 24px;
-    min-height: 24px;
-    padding: 5px;
-    margin: 0;
-    border: none;
-
     &, &:hover, &:active, &:backdrop, &:backdrop:hover, &:disabled {
       background: none;
       box-shadow: none;
       -gtk-icon-shadow: none;
       -gtk-icon-filter: none;
     }
-
     > image {
-      padding: 4px;
       background-color: transparent;
       background-image: radial-gradient(circle closest-side,
         var(--gp-window-control-bg) 92%, transparent 100%);
@@ -40,19 +31,10 @@ windowcontrols > button:not(.suggested-action):not(.destructive-action) {
       -gtk-icon-shadow: none;
       -gtk-icon-filter: none;
     }
-
     &:hover > image, &:active > image, &:focus-visible > image {
       color: $gp-window-control-fg;
     }
-
     &:backdrop { --gp-window-control-bg: #{$gp-window-control-backdrop-bg}; }
     &:disabled > image { color: transparent; }
-
-    .default-decoration & {
-      min-width: 22px;
-      min-height: 22px;
-      padding: 4px;
-      > image { padding: 3px; }
-    }
   }
 }

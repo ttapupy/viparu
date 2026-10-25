@@ -158,6 +158,19 @@ headerbar entry, .titlebar entry {
   caret-color: var(--window-fg-color);
 }
 
+toolbarview > .top-bar {
+  background-color: #26181D;
+  color: #f3eec9;
+}
+
+toolbarview > .top-bar headerbar, toolbarview > .top-bar headerbar:backdrop {
+  background: none;
+}
+
+.sidebar-pane toolbarview > .top-bar {
+  background-color: #1c3c57;
+}
+
 .sidebar, .sidebar-pane, .navigation-sidebar, placessidebar, stacksidebar,
 .nautilus-window .sidebar {
   background-color: #1c3c57;
@@ -286,228 +299,35 @@ popover {
 window.csd:not(.maximized):not(.fullscreen) {
   border: none;
   padding: 0px;
-  outline: 1px solid #E75441;
+  outline: 1px solid #E2B93E;
   outline-offset: -1px;
   --window-radius: 15px;
   border-radius: 15px;
 }
 
 window.csd:not(.maximized):not(.fullscreen):backdrop {
-  outline-color: rgba(173, 66, 54, 0.65);
+  outline-color: #aa8934;
 }
 
-switch {
-  min-width: 40px;
-  min-height: 20px;
-  padding: 2px;
-  border: none;
-  border-radius: 999px;
-  background-color: var(--gp-control-idle-bg);
-  box-shadow: none;
-  color: transparent;
-  font-size: 0;
-}
-
-switch, switch:hover, switch:active, switch:checked, switch:backdrop, switch:disabled, switch:checked:disabled {
+switch:checked:not(:disabled), switch:checked:not(:disabled):not(:backdrop), :backdrop switch:checked:not(:disabled):backdrop {
+  background-color: #3E8DCD;
   background-image: none;
+  border-color: #3E8DCD;
 }
 
-switch slider, switch:hover slider, switch:active slider, switch:checked slider, switch:backdrop slider, switch:disabled slider, switch:checked:disabled slider {
+.linked > button.toggle:not(.suggested-action):not(.destructive-action):checked {
+  background-color: #3E8DCD;
   background-image: none;
+  color: #FFFFFF;
+  border-color: #3E8DCD;
 }
 
-switch:checked {
-  background-color: var(--gp-control-accent-bg);
-  box-shadow: none;
+.linked > button.toggle:not(.suggested-action):not(.destructive-action):checked:hover {
+  background-color: #0080A9;
 }
 
-switch slider {
-  min-width: 20px;
-  min-height: 20px;
-  margin: 0;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background-color: var(--gp-control-thumb-bg);
-  box-shadow: 0 1px 2px rgba(38, 24, 29, 0.2);
-}
-
-switch image {
-  color: transparent;
-  -gtk-icon-source: none;
-}
-
-switch:disabled {
-  opacity: 0.45;
-}
-
-switch:focus-visible {
-  outline: 2px solid var(--gp-focus-ring);
-  outline-offset: 2px;
-}
-
-checkbutton {
-  border-spacing: 6px;
-}
-
-check, radio,
-checkbutton > check, checkbutton > radio {
-  min-width: 16px;
-  min-height: 16px;
-  padding: 0;
-  border: 2px solid var(--gp-control-outline);
-  background-color: var(--view-bg-color);
-  background-image: none;
-  box-shadow: none;
-  color: var(--gp-selection-fg);
-  -gtk-icon-source: none;
-  -gtk-icon-shadow: none;
-}
-
-check:checked, check:indeterminate, radio:checked, radio:indeterminate,
-checkbutton > check:checked,
-checkbutton > check:indeterminate, checkbutton > radio:checked, checkbutton > radio:indeterminate {
-  border-color: var(--gp-selection-bg);
-  background-color: var(--gp-selection-bg);
-}
-
-check:indeterminate, radio:indeterminate,
-checkbutton > check:indeterminate, checkbutton > radio:indeterminate {
-  -gtk-icon-source: -gtk-icontheme("list-remove-symbolic");
-  -gtk-icon-transform: none;
-}
-
-check:disabled, radio:disabled,
-checkbutton > check:disabled, checkbutton > radio:disabled {
-  opacity: 0.45;
-}
-
-check:focus-visible, radio:focus-visible,
-checkbutton > check:focus-visible, checkbutton > radio:focus-visible {
-  outline: 2px solid var(--gp-focus-ring);
-  outline-offset: 2px;
-}
-
-checkbutton:focus-visible > check,
-checkbutton:focus-visible > radio {
-  outline: 2px solid var(--gp-focus-ring);
-  outline-offset: 2px;
-}
-
-check, checkbutton > check {
-  border-radius: 4px;
-}
-
-check:checked, checkbutton > check:checked {
-  -gtk-icon-source: -gtk-icontheme("object-select-symbolic");
-}
-
-radio, checkbutton > radio {
-  border-radius: 50%;
-}
-
-radio:checked, checkbutton > radio:checked {
-  -gtk-icon-source: -gtk-icontheme("media-record-symbolic");
-  -gtk-icon-transform: scale(0.5);
-}
-
-.linked:not(.vertical) {
-  border-spacing: 6px;
-}
-
-.linked:not(.vertical) > button {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-.linked > button:not(.suggested-action):not(.destructive-action),
-button.toggle.text-button:not(.suggested-action):not(.destructive-action) {
-  border: 1px solid var(--gp-control-outline);
-  border-radius: 7px;
-  padding: 6px 12px;
-  background-color: var(--gp-control-bg);
-  color: var(--window-fg-color);
-  box-shadow: none;
-}
-
-.linked > button:not(.suggested-action):not(.destructive-action) label, .linked > button:not(.suggested-action):not(.destructive-action) label:backdrop, .linked > button:not(.suggested-action):not(.destructive-action) image, .linked > button:not(.suggested-action):not(.destructive-action) image:backdrop,
-button.toggle.text-button:not(.suggested-action):not(.destructive-action) label,
-button.toggle.text-button:not(.suggested-action):not(.destructive-action) label:backdrop,
-button.toggle.text-button:not(.suggested-action):not(.destructive-action) image,
-button.toggle.text-button:not(.suggested-action):not(.destructive-action) image:backdrop {
+.linked > button.toggle:not(.suggested-action):not(.destructive-action):checked label, .linked > button.toggle:not(.suggested-action):not(.destructive-action):checked image {
   color: inherit;
-}
-
-headerbar button.toggle.image-button:not(.text-button),
-.titlebar button.toggle.image-button:not(.text-button) {
-  padding: 4px;
-  min-width: 24px;
-  min-height: 24px;
-  border: none;
-}
-
-.linked > button:not(.suggested-action):not(.destructive-action):checked, .linked > button:not(.suggested-action):not(.destructive-action):checked:backdrop,
-button.toggle:not(.suggested-action):not(.destructive-action):checked,
-button.toggle:not(.suggested-action):not(.destructive-action):checked:backdrop {
-  background-color: var(--gp-control-accent-bg);
-  background-image: none;
-  color: var(--gp-control-accent-fg);
-  border-color: var(--gp-control-accent-bg);
-  box-shadow: none;
-  text-shadow: none;
-  -gtk-icon-shadow: none;
-}
-
-.linked > button:not(.suggested-action):not(.destructive-action):checked label, .linked > button:not(.suggested-action):not(.destructive-action):checked label:backdrop, .linked > button:not(.suggested-action):not(.destructive-action):checked image, .linked > button:not(.suggested-action):not(.destructive-action):checked image:backdrop,
-button.toggle:not(.suggested-action):not(.destructive-action):checked label,
-button.toggle:not(.suggested-action):not(.destructive-action):checked label:backdrop,
-button.toggle:not(.suggested-action):not(.destructive-action):checked image,
-button.toggle:not(.suggested-action):not(.destructive-action):checked image:backdrop {
-  color: inherit;
-}
-
-.linked > button:not(.suggested-action):not(.destructive-action):checked:hover,
-button.toggle:not(.suggested-action):not(.destructive-action):checked:hover {
-  background-color: var(--gp-control-accent-hover-bg);
-  border-color: var(--gp-control-accent-hover-bg);
-}
-
-.linked > button:not(.suggested-action):not(.destructive-action):checked:focus-visible,
-button.toggle:not(.suggested-action):not(.destructive-action):checked:focus-visible {
-  outline: 2px solid var(--gp-focus-ring);
-  outline-offset: 2px;
-}
-
-.linked > button:not(.suggested-action):not(.destructive-action):checked:disabled,
-button.toggle:not(.suggested-action):not(.destructive-action):checked:disabled {
-  opacity: 0.45;
-}
-
-listview.view > row:selected, listview.view > row:selected:backdrop,
-gridview.view > child:selected,
-gridview.view > child:selected:backdrop {
-  background-color: var(--gp-selection-bg);
-  color: var(--gp-selection-fg);
-  border-radius: 6px;
-}
-
-listview.view > row:selected label, listview.view > row:selected label:backdrop, listview.view > row:selected image, listview.view > row:selected image:backdrop,
-gridview.view > child:selected label,
-gridview.view > child:selected label:backdrop,
-gridview.view > child:selected image,
-gridview.view > child:selected image:backdrop {
-  color: inherit;
-}
-
-listview.view > row:selected:hover,
-gridview.view > child:selected:hover {
-  background-color: var(--gp-selection-hover-bg);
-}
-
-listview.view > row:selected:focus-visible,
-gridview.view > child:selected:focus-visible {
-  outline: 2px solid var(--gp-focus-ring);
-  outline-offset: -2px;
 }
 
 button.suggested-action label, button.suggested-action label:backdrop, button.suggested-action image, button.suggested-action image:backdrop, button.destructive-action label, button.destructive-action label:backdrop, button.destructive-action image, button.destructive-action image:backdrop {
@@ -524,284 +344,12 @@ button.suggested-action:not(.flat):not(:disabled):active, button.suggested-actio
   background-image: none;
 }
 
-/* Modern preferences over the legacy Ant user stylesheet. Keep this partial
- * CSS-only so its cascade can also be probed in memory without a theme build. */
-list.boxed-list,
-list.content {
-  background-color: var(--card-bg-color);
-  border: 1px solid var(--gp-control-outline);
-  border-radius: 12px;
-}
-
-list.boxed-list-separate > row {
-  background-color: var(--card-bg-color);
-}
-
-/* AdwActionRow's header already supplies horizontal margins and minimum height.
- * Restore the native outer inset, without doubling that internal spacing. */
-list.boxed-list > row:not(.expander),
-list.content > row:not(.expander),
-list.boxed-list-separate > row:not(.expander) {
-  padding: 2px;
-  background-image: none;
-  box-shadow: none;
-  color: var(--view-fg-color);
-}
-
-list.boxed-list > row:not(.expander),
-list.content > row:not(.expander) {
-  border-radius: 0;
-}
-
-/* Only the outside corners follow the card; middle rows stay square. Separate
- * cards and expander headers retain libadwaita's own corner handling. */
-list.boxed-list > row:first-child:not(.expander),
-list.content > row:first-child:not(.expander) {
-  border-top-left-radius: inherit;
-  border-top-right-radius: inherit;
-}
-
-list.boxed-list > row:last-child:not(.expander),
-list.content > row:last-child:not(.expander) {
-  border-bottom-left-radius: inherit;
-  border-bottom-right-radius: inherit;
-}
-
-list.boxed-list > row:not(.expander):not(:selected),
-list.content > row:not(.expander):not(:selected) {
-  background-color: transparent;
-}
-
-list.boxed-list > row:not(.expander).activatable:not(:disabled):hover,
-list.content > row:not(.expander).activatable:not(:disabled):hover,
-list.boxed-list-separate > row:not(.expander).activatable:not(:disabled):hover {
-  background-color: var(--gp-control-hover-bg);
-}
-
-list.boxed-list > row:not(.expander).activatable:not(:disabled):active,
-list.content > row:not(.expander).activatable:not(:disabled):active,
-list.boxed-list-separate > row:not(.expander).activatable:not(:disabled):active,
-list.boxed-list > row:not(.expander).activatable:not(:disabled).has-open-popup,
-list.content > row:not(.expander).activatable:not(:disabled).has-open-popup,
-list.boxed-list-separate > row:not(.expander).activatable:not(:disabled).has-open-popup {
-  background-color: var(--gp-control-active-bg);
-  box-shadow: none;
-}
-
-list.boxed-list > row:not(.expander):focus-visible,
-list.content > row:not(.expander):focus-visible,
-list.boxed-list-separate > row:not(.expander):focus-visible {
-  outline: 2px solid var(--gp-focus-ring);
-  outline-offset: -2px;
-}
-
-list.boxed-list > row:not(.expander):disabled,
-list.content > row:not(.expander):disabled,
-list.boxed-list-separate > row:not(.expander):disabled {
-  color: var(--gp-muted-fg);
-}
-
-/* Explicit legacy list-label colors must not defeat row foreground inheritance. */
-list.boxed-list > row > .header > .title > label.title,
-list.content > row > .header > .title > label.title,
-list.boxed-list-separate > row > .header > .title > label.title {
-  color: inherit;
-  text-shadow: none;
-}
-
-list.boxed-list > row > .header > .title > label.subtitle,
-list.content > row > .header > .title > label.subtitle,
-list.boxed-list-separate > row > .header > .title > label.subtitle {
-  color: var(--gp-muted-fg);
-  opacity: 1;
-  text-shadow: none;
-}
-
-/* AdwComboRow displays its value in an inline GtkListView, not a button.
- * Do not make ordinary .view/file lists transparent. */
-row.combo listview.inline,
-row.combo listview.inline:disabled {
-  background: none;
-  border: none;
-  box-shadow: none;
-  color: inherit;
-}
-
-row.combo listview.inline > row {
-  padding: 2px;
-  border: none;
-  border-radius: 0;
-  background: none;
-  box-shadow: none;
-  color: inherit;
-}
-
-row.combo listview.inline label,
-row.combo listview.inline image {
-  color: inherit;
-  text-shadow: none;
-  -gtk-icon-shadow: none;
-}
-
-/* White controls stand apart from linen preference cards without a brown rim. */
-list.boxed-list button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled),
-list.content button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled),
-list.boxed-list-separate button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled) {
-  background-color: var(--gp-control-bg);
-  border: 1px solid var(--gp-control-outline);
-  box-shadow: none;
-  color: var(--window-fg-color);
-}
-
-list.boxed-list button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled):hover,
-list.content button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled):hover,
-list.boxed-list-separate button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled):hover {
-  background-color: var(--gp-control-hover-bg);
-}
-
-list.boxed-list button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled):active,
-list.content button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled):active,
-list.boxed-list-separate button:not(.flat):not(.suggested-action):not(.destructive-action):not(:checked):not(:disabled):active {
-  background-color: var(--gp-control-active-bg);
-}
-
-/* Genuine dropdowns, legacy combo buttons, and explicitly dropdown-like menu
- * buttons only. The specificity also beats Ant's linked/checked button rules. */
-dropdown > button.toggle:not(.suggested-action):not(.destructive-action),
-combobox > box > button.combo:not(.suggested-action):not(.destructive-action),
-.suffixes menubutton > button.toggle:not(.suggested-action):not(.destructive-action),
-menubutton.dropdown > button.toggle:not(.suggested-action):not(.destructive-action) {
-  min-width: 16px;
-  min-height: 24px;
-  padding: 6px 10px;
-  border: 1px solid var(--gp-control-outline);
-  border-radius: 8px;
-  background: var(--gp-control-bg);
-  color: var(--window-fg-color);
-  box-shadow: none;
-  text-shadow: none;
-  -gtk-icon-shadow: none;
-}
-
-dropdown > button.toggle:not(.suggested-action):not(.destructive-action):hover,
-combobox > box > button.combo:not(.suggested-action):not(.destructive-action):hover,
-.suffixes menubutton > button.toggle:not(.suggested-action):not(.destructive-action):hover,
-menubutton.dropdown > button.toggle:not(.suggested-action):not(.destructive-action):hover {
-  background: var(--gp-control-hover-bg);
-}
-
-dropdown > button.toggle:not(.suggested-action):not(.destructive-action):active,
-dropdown > button.toggle:not(.suggested-action):not(.destructive-action):checked,
-combobox > box > button.combo:not(.suggested-action):not(.destructive-action):active,
-combobox > box > button.combo:not(.suggested-action):not(.destructive-action):checked,
-.suffixes menubutton > button.toggle:not(.suggested-action):not(.destructive-action):active,
-.suffixes menubutton > button.toggle:not(.suggested-action):not(.destructive-action):checked,
-menubutton.dropdown > button.toggle:not(.suggested-action):not(.destructive-action):active,
-menubutton.dropdown > button.toggle:not(.suggested-action):not(.destructive-action):checked {
-  background: var(--gp-control-active-bg);
-  color: var(--window-fg-color);
-  box-shadow: none;
-}
-
-dropdown:focus-visible > button,
-dropdown > button:focus-visible,
-combobox > box > button.combo:focus-visible,
-.suffixes menubutton > button:focus-visible,
-menubutton.dropdown > button:focus-visible {
-  outline: 2px solid var(--gp-focus-ring);
-  outline-offset: -2px;
-}
-
-dropdown > button.toggle:not(.suggested-action):not(.destructive-action):disabled,
-combobox > box > button.combo:not(.suggested-action):not(.destructive-action):disabled,
-.suffixes menubutton > button.toggle:not(.suggested-action):not(.destructive-action):disabled,
-menubutton.dropdown > button.toggle:not(.suggested-action):not(.destructive-action):disabled {
-  background: var(--gp-control-bg);
-  color: var(--gp-muted-fg);
-}
-
-dropdown > button label,
-dropdown > button image,
-combobox > box > button.combo cellview,
-.suffixes menubutton > button label,
-.suffixes menubutton > button image,
-menubutton.dropdown > button label,
-menubutton.dropdown > button image {
-  color: inherit;
-}
-
-/* Dropdowns embed a display-only list item inside their button. */
-dropdown > button > box > stack > row {
-  padding: 0;
-  background: none;
-  box-shadow: none;
-  color: inherit;
-}
-
-/* Confine popup styling to these controls, not application file/list views.
- * .view:not(.inline) also outranks Ant's popover.menu.background .view rule. */
-row.combo popover.menu listview.view:not(.inline) > row,
-dropdown popover.menu listview.view:not(.inline) > row,
-combobox popover.menu modelbutton,
-.suffixes menubutton popover.menu modelbutton,
-menubutton.dropdown popover.menu modelbutton {
-  padding: 6px 10px;
-  border-radius: 6px;
-  background: none;
-  color: var(--view-fg-color);
-  box-shadow: none;
-}
-
-row.combo popover.menu listview.view:not(.inline) > row:hover,
-dropdown popover.menu listview.view:not(.inline) > row:hover,
-combobox popover.menu modelbutton:hover,
-.suffixes menubutton popover.menu modelbutton:hover,
-menubutton.dropdown popover.menu modelbutton:hover {
-  background-color: var(--gp-control-hover-bg);
-}
-
-row.combo popover.menu listview.view:not(.inline) > row:selected,
-dropdown popover.menu listview.view:not(.inline) > row:selected,
-combobox popover.menu modelbutton:selected,
-.suffixes menubutton popover.menu modelbutton:selected,
-menubutton.dropdown popover.menu modelbutton:selected {
-  background-color: var(--gp-selection-bg);
-  color: var(--gp-selection-fg);
-}
-
-row.combo popover.menu listview.view:not(.inline) > row:selected:hover,
-dropdown popover.menu listview.view:not(.inline) > row:selected:hover,
-combobox popover.menu modelbutton:selected:hover,
-.suffixes menubutton popover.menu modelbutton:selected:hover,
-menubutton.dropdown popover.menu modelbutton:selected:hover {
-  background-color: var(--gp-selection-hover-bg);
-}
-
-row.combo popover.menu listview.view:not(.inline) > row:focus-visible,
-dropdown popover.menu listview.view:not(.inline) > row:focus-visible,
-combobox popover.menu modelbutton:focus-visible,
-.suffixes menubutton popover.menu modelbutton:focus-visible,
-menubutton.dropdown popover.menu modelbutton:focus-visible {
-  outline: 2px solid var(--gp-focus-ring);
-  outline-offset: -2px;
-}
-
-row.combo popover.menu listview.view:not(.inline) > row label,
-row.combo popover.menu listview.view:not(.inline) > row image,
-dropdown popover.menu listview.view:not(.inline) > row label,
-dropdown popover.menu listview.view:not(.inline) > row image,
-combobox popover.menu modelbutton cellview,
-.suffixes menubutton popover.menu modelbutton label,
-menubutton.dropdown popover.menu modelbutton label {
-  color: inherit;
-}
-
 windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize {
   --gp-window-control-bg: #E2B93E;
 }
 
 windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize > image {
-  -gtk-icon-source: -gtk-recolor(url("../assets/window-minimize-symbolic.svg"));
+  -gtk-icon-source: -gtk-recolor(url("assets/window-minimize-symbolic.svg"));
 }
 
 windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize {
@@ -809,7 +357,7 @@ windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize
 }
 
 windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize > image {
-  -gtk-icon-source: -gtk-recolor(url("../assets/window-maximize-symbolic.svg"));
+  -gtk-icon-source: -gtk-recolor(url("assets/window-maximize-symbolic.svg"));
 }
 
 windowcontrols > button:not(.suggested-action):not(.destructive-action).close {
@@ -817,15 +365,7 @@ windowcontrols > button:not(.suggested-action):not(.destructive-action).close {
 }
 
 windowcontrols > button:not(.suggested-action):not(.destructive-action).close > image {
-  -gtk-icon-source: -gtk-recolor(url("../assets/window-close-symbolic.svg"));
-}
-
-windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize, windowcontrols > button:not(.suggested-action):not(.destructive-action).close {
-  min-width: 24px;
-  min-height: 24px;
-  padding: 5px;
-  margin: 0;
-  border: none;
+  -gtk-icon-source: -gtk-recolor(url("assets/window-close-symbolic.svg"));
 }
 
 windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize, windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize:hover, windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize:active, windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize:backdrop, windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize:backdrop:hover, windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize:disabled, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize:hover, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize:active, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize:backdrop, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize:backdrop:hover, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize:disabled, windowcontrols > button:not(.suggested-action):not(.destructive-action).close, windowcontrols > button:not(.suggested-action):not(.destructive-action).close:hover, windowcontrols > button:not(.suggested-action):not(.destructive-action).close:active, windowcontrols > button:not(.suggested-action):not(.destructive-action).close:backdrop, windowcontrols > button:not(.suggested-action):not(.destructive-action).close:backdrop:hover, windowcontrols > button:not(.suggested-action):not(.destructive-action).close:disabled {
@@ -836,7 +376,6 @@ windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize
 }
 
 windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize > image, windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize > image, windowcontrols > button:not(.suggested-action):not(.destructive-action).close > image {
-  padding: 4px;
   background-color: transparent;
   background-image: radial-gradient(circle closest-side, var(--gp-window-control-bg) 92%, transparent 100%);
   background-position: center;
@@ -861,12 +400,7 @@ windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize
   color: transparent;
 }
 
-.default-decoration windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize, .default-decoration windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize, .default-decoration windowcontrols > button:not(.suggested-action):not(.destructive-action).close {
-  min-width: 22px;
-  min-height: 22px;
-  padding: 4px;
-}
-
-.default-decoration windowcontrols > button:not(.suggested-action):not(.destructive-action).minimize > image, .default-decoration windowcontrols > button:not(.suggested-action):not(.destructive-action).maximize > image, .default-decoration windowcontrols > button:not(.suggested-action):not(.destructive-action).close > image {
-  padding: 3px;
+switch {
+  --accent-bg-color: #3E8DCD;
+  --accent-fg-color: #FFFFFF;
 }

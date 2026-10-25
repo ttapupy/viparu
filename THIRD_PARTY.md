@@ -1,78 +1,82 @@
 # Third-party source provenance
 
-Vintage-Pop-Art-Unified is a derivative theme. Local palette changes, source
-reorganization and new controls do not remove the authorship or license
-requirements of the original foundations. No separately installed Ant-Bloody or
-Yaru theme is needed at runtime, but their included source contributions remain
-substantial.
+Vintage-Pop-Art-Unified is a derivative theme. Recoloring, source reorganization
+and project-specific controls do not remove upstream authorship or license
+requirements. The package contains the sources and artwork it needs; it does not
+require a separately installed Ant-Bloody or Yaru theme.
 
-## GTK foundation: Ant-Bloody / Ant
+## Current GTK foundation: Yaru
 
-- **Author/project maintainer:** [EliverLara](https://github.com/EliverLara).
-- **Direct starting point:** [Ant-Bloody](https://github.com/EliverLara/Ant-Bloody),
-  the Bloody variant of [Ant](https://github.com/EliverLara/Ant).
-- **Earlier foundation:** [evopop-gtk-theme](https://github.com/solus-project/evopop-gtk-theme),
-  explicitly credited by Ant-Bloody's README.
-- **License:** GPL-3.0; the inherited license text is retained in
-  [`LICENSE`](LICENSE). Preserve any additional notices in individual sources.
+- Project: https://github.com/ubuntu/yaru
+- Authors: Yaru contributors and Canonical; the upstream authors list is retained
+  in [`licenses/yaru/AUTHORS`](licenses/yaru/AUTHORS).
+- Source revision: `7f18973e05607c609c4b972f0dd9bff36fa2a13e`
+  (`Upload to stonking`).
+- Source locations in that revision: `gtk/src/default/gtk-3.0/` and
+  `gtk/src/default/gtk-4.0/`.
+- Local locations: `scss/yaru/gtk-3.0/` and `scss/yaru/gtk-4.0/`.
+- License texts: `licenses/yaru/COPYING`, `COPYING.LGPL-2.1`,
+  `COPYING.LGPL-3.0`, and `LICENSE_CCBYSA`, together with notices in the files.
 
-### Included and adapted code
+The included GTK sources provide the actual drawing helpers, widget layout,
+interaction states, GTK 3 application rules and libhandy adaptations. Yaru itself
+builds on GNOME's Adwaita/GTK foundation. Keep the original copyright notices.
+Yaru uses mixed licensing; do not assume the project's root GPL license replaces
+source-specific or artwork-specific terms.
 
-The Ant-Bloody GTK 3.20 foundation now lives under `scss/gtk-3.0/`; its GTK 4
-foundation lives under `scss/gtk-4.0/`. Both include adapted drawing helpers,
-common state/focus declarations and GNOME application styles. Their `_widgets.scss`
-files list the active widget partials: currently 34 for GTK 3 and 33 for GTK 4.
+Yaru SVG/PNG artwork is distributed under its Creative Commons
+Attribution-ShareAlike 4.0 terms. Runtime image copies under `gtk-3.0/assets/` and
+`gtk-4.0/assets/` come from this source snapshot. SVG source artwork and original
+metadata are retained in the vendored source directories.
 
-The inherited code covers ordinary widgets, chrome, lists, menus/popovers,
-containers, dialogs, indicators and window-decoration foundations. It is not
-accurate to describe Ant-Bloody as merely an inspiration for the color scheme.
+## Project-specific layers
 
-### Project-specific additions and adaptations
+The shared JSON palette and semantic roles, `_yaru-colors.scss` mapping, hybrid
+chrome, stronger suggested-button state colors,
+colored window-control dots, local SVG glyphs and build tooling are project work.
+These layers are imported around the Yaru foundation instead of replacing it
+with Ant-derived widget rules. The build does not install user CSS or modify
+desktop settings. The separate, explicitly invoked `install-gtk.sh` links or
+copies the targeted `gtk-4.0/libadwaita.css` user layer and artwork into the user's
+GTK 4 configuration, with backups and uninstall support; it does not install the
+full Yaru widget stylesheet there or change GSettings. Header/control sizing is
+left to Yaru for traditional GTK themes and to libadwaita for the user layer.
 
-- A shared JSON palette and semantic role assignments replace the original colors.
-- The public GTK named-color API and palette-based GTK 3 adaptation are local.
-- Switches, checkboxes and radio buttons use palette-painted CSS instead of the
-  original fixed-color bitmap control assets.
-- Window controls use palette-painted dots and local recolorable SVG glyphs;
-  their old bitmap rules have been removed from the active source foundation.
-- Toolbar flattening no longer applies to GTK 4 suggested/destructive actions.
-- Suggested action buttons have distinct hover and pressed colors.
-- Modern libadwaita color, chrome, preferences and window-outline adapters are local.
-- Build scripts and Shell palette preprocessing are local project tooling.
+## Historical Ant-Bloody foundation
 
-These descriptions distinguish new/adapted work from inherited code; they do not
-claim that every retained upstream widget rule has been rewritten.
+Earlier revisions, including the initial `be2d11e` snapshot, used substantial GTK
+code from [Ant-Bloody](https://github.com/EliverLara/Ant-Bloody) by
+[EliverLara](https://github.com/EliverLara). Ant-Bloody credits
+[evopop-gtk-theme](https://github.com/solus-project/evopop-gtk-theme) as its foundation.
+That historical code retains its GPL-3.0 provenance and license in Git history.
 
-## GNOME Shell foundation
+The current GTK entry points no longer import Ant-Bloody. Its widget source trees,
+fixed-color control bitmaps and legacy toolbar/preferences workarounds have been
+removed. Ant-Bloody remains a visual reference. Project-owned palette/chrome
+work developed during the earlier iteration is retained in the new Yaru-based
+layers; the history and authorship of the previous foundation are not concealed.
 
-- **Project:** GNOME Shell and its contributors.
-- **Location:** `gnome-shell/upstream/theme/gnome-shell-sass/`.
-- **License text:** [`COPYING`](gnome-shell/upstream/theme/gnome-shell-sass/COPYING)
-  and notices in the included sources.
+## GNOME Shell and Yaru Shell layers
 
-The Shell drawing, common styles and widget sources are prepared into generated
-copies for palette substitution. The vendored inputs retain their provenance.
+The existing Shell component is based on GNOME Shell and Yaru, not Ant-Bloody:
 
-## Yaru Shell adaptations and artwork
+- `gnome-shell/upstream/theme/gnome-shell-sass/`: GNOME Shell sources and their
+  [`COPYING`](gnome-shell/upstream/theme/gnome-shell-sass/COPYING).
+- `gnome-shell/src/gnome-shell-sass/`: Yaru dock/tweaks and their
+  [`COPYING`](gnome-shell/src/gnome-shell-sass/COPYING).
+- Referenced `gnome-shell/src/*.svg`: Yaru artwork with retained embedded metadata.
 
-- **Project:** [Yaru](https://github.com/ubuntu/yaru), Canonical and Yaru contributors.
-- **Locations:** `gnome-shell/src/gnome-shell-sass/` and the referenced
-  `gnome-shell/src/*.svg` artwork.
-- **License text:** [`COPYING`](gnome-shell/src/gnome-shell-sass/COPYING) and
-  source/artwork-specific notices.
-
-The active Shell build uses the Yaru dock/tweaks layers and local artwork; it does
-not require the original Yaru Meson build or a separately installed Yaru theme.
-Keep embedded artwork metadata and source copyright notices when redistributing.
+Shell palette preprocessing writes generated copies without modifying those
+vendored inputs. This GTK rebase does not replace the Shell snapshot or claim
+that all three components came from the same upstream revision.
 
 ## Contrast and color utilities
 
 - `common/sass-utils.scss`: copyright Canonical Ltd; its header credits
-  Marco Trevisan and specifies LGPL-2.1-or-later. The full license text is
-  included in [`licenses/LGPL-2.1`](licenses/LGPL-2.1).
-- `common/oklab.scss`: based on the Oklab color space by **Björn Ottosson**;
-  its header identifies the original code as public domain with an alternative
-  MIT license. See the original reference and license links retained there.
+  Marco Trevisan and specifies LGPL-2.1-or-later. Full text:
+  [`licenses/LGPL-2.1`](licenses/LGPL-2.1).
+- `common/oklab.scss`: based on Oklab by **Björn Ottosson**. Its header identifies
+  the original code as public domain with an alternative MIT license and retains
+  the original reference/license URLs.
 
-Author names and their diacritics are preserved; translating project documentation
-must not alter attribution or remove original copyright/license notices.
+Original copyright notices, author names and their diacritics must be preserved.
