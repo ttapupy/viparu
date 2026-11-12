@@ -1,0 +1,12 @@
+{
+  "nile-blue": {
+    "name": "Viparu-Nile-Blue",
+    "sidebar_base": "chathams_blue",
+    "sidebar_hover": "silk_blue"
+  },
+  "brown": {
+    "name": "Viparu-Brown",
+    "sidebar_base": "english_walnut",
+    "sidebar_hover": "rose_taupe"
+  }
+}

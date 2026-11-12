@@ -17,7 +17,11 @@ From the project root:
 python3 -B scripts/build-theme.py
 ```
 
-The build generates the palette, prepares Shell sources, compiles all styles and
+The plain `theme-variant` file selects the local theme (`nile-blue` by default).
+The default command rebuilds only that selection as before. An extracted variant's
+own `theme-variant` preserves its identity and colors on a default rebuild.
+
+The build generates the palette and variant assignments, prepares Shell sources, compiles all styles and
 checks every image URL before publishing the compiled CSS and referenced assets.
 GTK runtime URLs stay within each component's `assets/` directory. Only images
 referenced by the compiled styles are copied from the vendored source artwork.
@@ -27,13 +31,41 @@ In a linked GTK 4 installation its new outputs are visible through the existing
 links, so restart applications to load them. Copy installations need an explicit
 `./install-gtk.sh --update`.
 
+## Standalone variant builds
+
+```sh
+python3 -B scripts/build-theme.py --variants
+```
+
+This builds **both** complete standalone source+compiled theme directories:
+
+```text
+dist/themes/Viparu-Nile-Blue/
+dist/themes/Viparu-Brown/
+```
+
+It does not rebuild or modify local root styles or the desktop. Each directory
+includes its own `theme-variant` and can be copied directly into `~/.themes/`.
+Keep the exact display/folder names `Viparu-Nile-Blue` and `Viparu-Brown`.
+To build only one standalone copy, use `--variant brown` or `--variant nile-blue`
+instead of `--variants`. Neither option changes the local `theme-variant` selection.
+
 ## Palette and customization
 
-- Edit `color-palette.json` for raw colors.
-- Edit `scss/_roles.scss` for semantic assignments, window-outline geometry and
-  window-control colors.
-- `color-palette.scss` is generated; do not edit it manually.
+- Edit shared `color-palette.json` for raw colors.
+- `theme-variants.json` maps `nile-blue` and `brown` IDs to `name` and the
+  `sidebar_base`/`sidebar_hover` palette variable names.
+- The plain `theme-variant` file selects the root checkout's local variant.
+- Edit shared `scss/_roles.scss` for semantic assignments, window-outline geometry
+  and window-control colors.
+- `color-palette.scss` and `scss/_variant.scss` are generated; do not edit them manually.
 - `scss/_yaru-colors.scss` maps the shared roles onto Yaru's color API.
+
+`Viparu-Nile-Blue` is the renamed original appearance. `Viparu-Brown` provisionally
+uses `english_walnut` for the sidebar base and `rose_taupe` for hover; light linen,
+header and control accents stay unchanged. Both variants look the same for light
+and dark requests. The existing screenshot shows the original Nile Blue appearance,
+not a Brown preview.
 
 The 18px window dots use `tulip_tree` for minimize, `cascade` for maximize,
 `carmine` for close and `bronco` when inactive. Their source glyphs live in
@@ -52,7 +84,10 @@ theme. Fully dark and high-contrast variants are not currently provided.
 ## Source layout
 
 ```text
-color-palette.json          Raw palette
+theme-variant             Plain local variant ID (nile-blue by default)
+theme-variants.json        Variant names and sidebar palette-variable mappings
+color-palette.json          Shared raw palette
+scss/_variant.scss         Generated variant assignments; do not edit
 scss/_roles.scss           Shared semantic roles
 scss/_yaru-colors.scss     Yaru color mapping
 scss/_gtk3-chrome.scss     GTK 3 chrome and window controls
@@ -81,17 +116,17 @@ into the libadwaita user layer. The separate entry points are intentional.
 
 | Script | Purpose | Writes |
 | --- | --- | --- |
-| `scripts/build-theme.py` | Complete local build | Generated palette, Shell staging, compiled CSS and referenced assets |
+| `scripts/build-theme.py` | Rebuild selected local theme; `--variants` builds both standalone themes, `--variant ID` builds one instead | Local generated palette/variant assignments, Shell staging, CSS and assets; with `--variants`, `dist/themes/Viparu-Nile-Blue/` and `dist/themes/Viparu-Brown/` without rebuilding/modifying root styles |
 | `scripts/palette.py` | Generate SCSS from the JSON palette | `color-palette.scss`; `--check` is read-only |
 | `gnome-shell/prepare_sources.py` | Transform the vendored Shell source copies | `gnome-shell/.build/scss/`; `--check` is read-only |
 | `install-gtk.sh` | Explicit GTK 4 user installation and removal | Three config entries plus backup/ownership state; `--status` is read-only |
-| `scripts/package-theme.py` | Rebuild and create a clean distribution archive | Build outputs and `dist/Viparu.tar.gz` |
+| `scripts/package-theme.py` | Build and package both variants by default; optional `--variant nile-blue` or `--variant brown` | Standalone variant outputs and corresponding `dist/Viparu-Nile-Blue.tar.gz` / `dist/Viparu-Brown.tar.gz` |
 
 The vendored `scss/yaru/*/render-assets.sh` files are upstream artwork-maintenance
 helpers, not project installation/build commands. Pre-rendered artwork is
 included, so Inkscape and image optimizers are not needed for a normal build.
 
-## Create a release archive
+## Create release archives
 
 From the project root:
 
@@ -99,20 +134,30 @@ From the project root:
 python3 -B scripts/package-theme.py
 ```
 
-This rebuilds first, then creates:
+This builds and packages both variants by default:
 
 ```text
-dist/Viparu.tar.gz
+dist/Viparu-Nile-Blue.tar.gz
+dist/Viparu-Brown.tar.gz
 ```
 
-The archive contains one top-level `Viparu/` directory with
-compiled styles, runtime artwork, corresponding source files, installer,
-documentation, developer checks and license notices. No Git command is required;
-the same script works from an extracted source package. It packages the current
-files, including uncommitted source edits, so review your changes before release.
-The source checkout may have any directory name; the archive and its top-level
-folder are always named **Viparu**, matching `index.theme`. Install the extracted
-`Viparu/` folder to make the theme discoverable by that name.
+To package only one, use either command:
+
+```sh
+python3 -B scripts/package-theme.py --variant nile-blue
+python3 -B scripts/package-theme.py --variant brown
+```
+
+Each archive contains its exact top-level `Viparu-Nile-Blue/` or `Viparu-Brown/`
+directory, matching its display name and `index.theme`, with compiled styles,
+runtime artwork, corresponding sources, installer, documentation, developer checks
+and license notices. Its own `theme-variant` ensures a default rebuild preserves
+that variant's identity and colors. Keep the folder name when extracting into
+`~/.themes/`; the source checkout itself may have any directory name.
+
+No Git command is required; packaging also works from an extracted source package.
+It includes current files, including uncommitted source edits, so review changes
+before release. Standalone builds leave local root styles and desktop settings alone.
 
 An explicit list of project paths excludes `.git/`, `.build-tools/`, `dist/`,
 Shell `.build/` staging and Python caches. Local config backups and diagnostic
@@ -130,7 +175,7 @@ Before publishing:
 4. Check the appearance manually on the toolkit/Shell versions you intend to
    support. Record those versions in release notes; do not claim unverified
    compatibility.
-5. Upload the archive. Do not archive the entire development directory by hand.
+5. Upload the selected archives. Do not archive the entire development directory by hand.
 
 The packaging command neither installs the theme nor runs test suites.
 

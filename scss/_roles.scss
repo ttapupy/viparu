@@ -1,5 +1,6 @@
 // Shared semantic roles. Raw palette colors are defined in color-palette.json.
 @import '../color-palette';
+@import 'variant';
 
 // Large light surfaces share the file view's pale background.
 $gp-view-bg: mix($white, $linen, 60%);
@@ -26,9 +27,9 @@ $gp-window-control-backdrop-bg: $bronco;
 // Keep the header dark; configure the sidebar surface independently.
 $gp-header-bg: $almost_black;
 
-$gp-sidebar-bg: mix($chathams_blue, $almost_black, 60%);
+$gp-sidebar-bg: mix($gp-sidebar-base, $almost_black, 60%);
 $gp-sidebar-fg: $linen;
-$gp-sidebar-hover-bg: mix($silk_blue, $gp-sidebar-bg, 85%);
+$gp-sidebar-hover-bg: mix($gp-sidebar-hover-color, $gp-sidebar-bg, 85%);
 $gp-sidebar-font-weight: 500;
 $gp-chrome-fg:mix($pale_spring_bud, $linen, 60%);
 $gp-chrome-muted-fg: $bronco;

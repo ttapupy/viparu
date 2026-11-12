@@ -2,10 +2,13 @@
 
 ## 1. Install the theme directory
 
-Extract `Viparu.tar.gz` into `~/.themes/`, or place the complete project at:
+Extract `Viparu-Nile-Blue.tar.gz` or `Viparu-Brown.tar.gz` into `~/.themes/`,
+keeping the exact display/folder name `Viparu-Nile-Blue` or `Viparu-Brown`.
+For example:
 
 ```text
-~/.themes/Viparu/
+~/.themes/Viparu-Nile-Blue/
+├── theme-variant
 ├── index.theme
 ├── install-gtk.sh
 ├── gtk-3.0/
@@ -15,6 +18,13 @@ Extract `Viparu.tar.gz` into `~/.themes/`, or place the complete project at:
 
 Keep the remaining source, documentation and license files as well. Compiled CSS
 and artwork are supplied; building is only necessary after changing the sources.
+Alternatively, `python3 -B scripts/build-theme.py --variants` creates both complete
+standalone source+compiled directories in `dist/themes/`; copy them into `~/.themes/`
+without renaming them. This does not rebuild or modify local root styles or the desktop.
+
+`Viparu-Nile-Blue` is the renamed original theme. `Viparu-Brown` provisionally uses
+`english_walnut` sidebar base and `rose_taupe` hover; light linen, header and control
+accents are unchanged. Both variants retain the same appearance in light and dark modes.
 
 Run all installation commands as your desktop user, **not with sudo**. They do
 not require administrator access or a network connection.
@@ -22,8 +32,8 @@ not require administrator access or a network connection.
 ## 2. Enable the GNOME Shell component (optional)
 
 Install and enable the **User Themes** GNOME Shell extension using your
-distribution's extension tools. Then select **Viparu** as the Shell theme in
-GNOME Tweaks.
+distribution's extension tools. Then select **Viparu-Nile-Blue** or **Viparu-Brown**
+as the Shell theme in GNOME Tweaks.
 
 The included sources target GNOME Shell 51. Other versions and dock extensions
 can use different selectors or override parts of the theme. The installer does
@@ -32,7 +42,8 @@ not install extensions, select a Shell theme or replace GDM's login-screen theme
 ## 3. Select the GTK theme
 
 In **GNOME Tweaks → Appearance → Legacy Applications**, select
-**Viparu**. The setting's name can vary with the desktop version.
+**Viparu-Nile-Blue** or **Viparu-Brown**, matching your Shell selection.
+The setting's name can vary with the desktop version.
 This selects the ordinary GTK theme, including GTK 3 and GTK 4 applications that
 honor the theme setting.
 
@@ -41,7 +52,8 @@ only this setting is changed. Use the separate step below to style them too.
 
 ## 4. Enable the GTK 4/libadwaita user layer
 
-Open a terminal in `~/.themes/Viparu/` and run:
+Open a terminal in the chosen directory, for example `~/.themes/Viparu-Nile-Blue/`,
+and run:
 
 ```sh
 ./install-gtk.sh
@@ -131,7 +143,31 @@ light and dark requests; a separate fully dark variant is not provided.
 
 Do not discard the installer's state or original backups during an update.
 
-## Removing or switching themes
+## Switching variants or migrating from Viparu
+
+Keep the destination's exact folder name. From **inside that destination directory**
+(for example `~/.themes/Viparu-Brown/`), run:
+
+```sh
+./install-gtk.sh --update
+```
+
+The unchanged `install-gtk.sh` uses shared `viparu` ownership/backup state across
+both variants and the old theme. This retargets links or refreshes copies while
+retaining the current link/copy mode and original pre-Viparu backups; do not
+uninstall first or rename the state directory. Select the matching **Legacy
+Applications** and **Shell** themes separately in Tweaks, then restart applications.
+
+Existing `Viparu` users can keep their original directory while migrating and
+select the new names. No desktop settings are changed automatically.
+
+Each extracted archive contains its own plain `theme-variant` file.
+`python3 -B scripts/build-theme.py` rebuilds that selected local theme, preserving
+its identity and colors (`nile-blue` is the checkout default). The `--variants`
+and `--variant ID` options build standalone copies instead of switching this local
+selection; see [the development guide](DEVELOPMENT.md) for builds and packaging.
+
+## Removing or switching to an unrelated theme
 
 From the theme directory, run:
 
