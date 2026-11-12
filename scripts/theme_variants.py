@@ -26,7 +26,9 @@ def load_variants(root=ROOT):
     for key, variant in variants.items():
         if not re.fullmatch(r"[a-z][a-z0-9-]*", key):
             raise ValueError(f"Invalid variant ID: {key!r}")
-        if not isinstance(variant, dict) or set(variant) != {"name", "sidebar_base", "sidebar_hover"}:
+        required = {"name", "sidebar_base", "sidebar_hover"}
+        if (not isinstance(variant, dict) or not required.issubset(variant)
+                or set(variant) - required - {"shell_accent", "shell_toggle_bg", "shell_toggle_fg", "sidebar_selection"}):
             raise ValueError(f"Invalid variant definition: {key}")
         name = variant["name"]
         if not isinstance(name, str) or not re.fullmatch(r"Viparu-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*", name):
@@ -34,7 +36,9 @@ def load_variants(root=ROOT):
         if name in names:
             raise ValueError(f"Duplicate theme name: {name}")
         names.add(name)
-        for role in ("sidebar_base", "sidebar_hover"):
+        for role in ("sidebar_base", "sidebar_hover", "shell_accent", "shell_toggle_bg", "shell_toggle_fg", "sidebar_selection"):
+            if role not in variant:
+                continue
             color = variant[role]
             if not isinstance(color, str) or not re.fullmatch(r"[a-z][a-z0-9_]*", color) or color not in palette:
                 raise ValueError(f"Unknown palette color for {key}/{role}: {color!r}")
@@ -51,12 +55,20 @@ def selected_variant(root=ROOT):
 
 def generate_variant(root=ROOT):
     key, variant = selected_variant(root)
-    (root / "scss/_variant.scss").write_text(
+    assignments = (
         "// Generated from theme-variants.json and theme-variant; do not edit.\n"
         f"$gp-sidebar-base: ${variant['sidebar_base']};\n"
-        f"$gp-sidebar-hover-color: ${variant['sidebar_hover']};\n",
-        encoding="utf-8",
+        f"$gp-sidebar-hover-color: ${variant['sidebar_hover']};\n"
     )
+    if "shell_accent" in variant:
+        assignments += f"$gp-shell-accent-override: ${variant['shell_accent']};\n"
+    if "shell_toggle_bg" in variant:
+        assignments += f"$gp-shell-toggle-bg: ${variant['shell_toggle_bg']};\n"
+    if "shell_toggle_fg" in variant:
+        assignments += f"$gp-shell-toggle-fg: ${variant['shell_toggle_fg']};\n"
+    if "sidebar_selection" in variant:
+        assignments += f"$gp-sidebar-selection-bg: ${variant['sidebar_selection']};\n"
+    (root / "scss/_variant.scss").write_text(assignments, encoding="utf-8")
     name = variant["name"]
     (root / "index.theme").write_text(
         "[Desktop Entry]\nType=X-GNOME-Metatheme\n"

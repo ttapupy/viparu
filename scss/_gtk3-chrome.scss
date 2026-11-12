@@ -28,7 +28,7 @@ headerbar, .titlebar {
     label, image { &, &:backdrop { color: inherit; } }
     &:hover { background-color: $gp-sidebar-hover-bg; }
     &:selected, &:selected:backdrop {
-      background-color: $gp-selection-bg;
+      background-color: $gp-sidebar-selection-bg;
       color: $gp-selection-fg;
       &:hover { background-color: $gp-selection-hover-bg; }
     }

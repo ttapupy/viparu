@@ -43,6 +43,7 @@ $gp-suggested-active-bg: mix($gp-accent-bg, $almost_black, 60%);
 $gp-accent-on-light: $chathams_blue;
 $gp-accent-on-dark: $light_orange;
 $gp-selection-bg: $warm_orange;
+$gp-sidebar-selection-bg: $gp-selection-bg !default;
 $gp-selection-hover-bg: $pale_spring_bud;
 $gp-selection-fg: $almost_black;
 $gp-focus-ring: $carmine;
@@ -62,12 +63,13 @@ $gp-destructive-on-dark: mix($carmine, $linen, 75%);
 $gp-success: $cascade;
 $gp-folder-color: $cascade;
 
-// Shell surfaces and accents follow the application sidebar and selection roles.
+// Shell follows application roles unless the variant supplies its own accent.
+$gp-shell-accent-override: null !default;
 $gp-shell-bg: $gp-sidebar-bg;
 $gp-shell-surface-bg: $gp-sidebar-bg;
 $gp-shell-raised-bg: lighten($gp-shell-surface-bg, 6%);
 $gp-shell-hover-bg: $gp-sidebar-hover-bg;
-$gp-shell-accent-bg: $gp-selection-bg;
+$gp-shell-accent-bg: if($gp-shell-accent-override != null, $gp-shell-accent-override, $gp-selection-bg);
 $gp-shell-accent-fg: $gp-selection-fg;
 $gp-shell-fg: $linen;
 $gp-shell-muted-fg: $bronco;

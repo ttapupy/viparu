@@ -6,7 +6,11 @@
   },
   "brown": {
     "name": "Viparu-Brown",
-    "sidebar_base": "english_walnut",
-    "sidebar_hover": "rose_taupe"
+    "sidebar_base": "cocoa",
+    "sidebar_hover": "bronco",
+    "shell_accent": "tulip_tree",
+    "shell_toggle_bg": "tulip_tree",
+    "shell_toggle_fg": "chathams_blue",
+    "sidebar_selection": "tulip_tree"
   }
 }
