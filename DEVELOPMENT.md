@@ -53,19 +53,62 @@ instead of `--variants`. Neither option changes the local `theme-variant` select
 ## Palette and customization
 
 - Edit shared `color-palette.json` for raw colors.
-- `theme-variants.json` maps `nile-blue` and `brown` IDs to `name` and the
-  `sidebar_base`/`sidebar_hover` palette variable names.
+- `theme-variants.json` maps `nile-blue` and `brown` IDs to exact names and
+  palette-based role overrides; see the field reference below.
 - The plain `theme-variant` file selects the root checkout's local variant.
 - Edit shared `scss/_roles.scss` for semantic assignments, window-outline geometry
   and window-control colors.
 - `color-palette.scss` and `scss/_variant.scss` are generated; do not edit them manually.
 - `scss/_yaru-colors.scss` maps the shared roles onto Yaru's color API.
 
-`Viparu-Nile-Blue` is the renamed original appearance. `Viparu-Brown` provisionally
-uses `english_walnut` for the sidebar base and `rose_taupe` for hover; light linen,
-header and control accents stay unchanged. Both variants look the same for light
-and dark requests. The existing screenshot shows the original Nile Blue appearance,
-not a Brown preview.
+`Viparu-Nile-Blue` preserves the original appearance unchanged. `Viparu-Brown`
+uses `mix($cocoa, $rose_taupe, 80%)` for its sidebar base (80% cocoa, 20%
+rose taupe), followed by the existing `mix($gp-sidebar-base, $almost_black, 60%)`
+darkening (60% base, 40% almost black). Its shared sidebar/Shell hover uses
+85% `bronco` / 15% sidebar background. `tulip_tree` supplies sidebar selection,
+Shell accents and active quick-toggle backgrounds; `chathams_blue` supplies
+active toggle text/icons. Enabled checked and unchecked toggles use
+`brownish_red` text/icons on hover and keyboard focus. Only unchecked toggles
+receive the 70% `silver` / 30% `linen` hover/focus background; active toggles
+retain gold. Disabled states retain their insensitive styling.
+
+Brown swaps GTK surfaces: `linen` content/window backgrounds and pale cards
+(60% `white` / 40% `linen`), with `ocean` for both general and control GTK accents.
+Dark headers and window-dot colors are unchanged. Each variant has a fixed
+appearance for light and dark requests. The README shows both variants:
+`screenshot.png` for Nile Blue and `screenshot_brown.png` for Brown. Both images
+are included in each release archive.
+
+### `theme-variants.json` field reference
+
+`scripts/theme_variants.py` validates and generates `scss/_variant.scss` from
+this file. Each variant requires `name` (a unique exact `Viparu-…` display/folder
+name), `sidebar_base` and `sidebar_hover`. All color fields are existing keys in
+`color-palette.json`, not literal CSS colors. Unknown fields are rejected.
+The required sidebar base is darkened with 40% `almost_black`; sidebar hover
+mixes 85% of its specified color with 15% of that darkened background and also
+supplies the shared Shell hover role.
+
+All optional fields are listed below. Omitting them retains the original Nile
+Blue defaults; no Brown overrides are implicitly applied to Nile Blue.
+
+| Optional field | Meaning | Behavior when omitted |
+| --- | --- | --- |
+| `sidebar_tint` | Mix a fixed 20% of this palette color into 80% `sidebar_base`, before the shared darkening | Use `sidebar_base` directly before darkening |
+| `sidebar_selection` | Override sidebar selection background | Shared `warm_orange` selection |
+| `shell_accent` | Override the Shell accent role | Shared `warm_orange` selection |
+| `shell_toggle_bg` | Override checked quick-toggle backgrounds (the checked menu button also mixes in Shell foreground) | No separate toggle-background override; keep ordinary Shell styling |
+| `shell_toggle_fg` | Checked quick-toggle text/icon color when the toggle-background override is enabled | Shell accent foreground (`almost_black`) |
+| `shell_toggle_focus_fg` | Text/icon color on **both hover and keyboard focus** for enabled checked and unchecked quick toggles/menu buttons; also enables the pale 70% `silver` / 30% `linen` unchecked hover/focus background. Checked toggles retain their active background | No separate hover/focus foreground or pale-background override; keep ordinary states |
+| `swap_content_surfaces` | Boolean: `true` swaps GTK content/window and card backgrounds | `false`: pale content/window backgrounds (60% `white` / 40% `linen`), `linen` cards |
+| `gtk_accent` | Maps to **both** `$gp-accent-bg` (general GTK accent) and `$gp-control-accent-bg` (control accent) | General `bondi_blue`, control `silk_blue` |
+
+Optional palette fields generate role overrides, while `swap_content_surfaces`
+must be a JSON boolean. `shell_toggle_fg` and the checked hover/focus foreground
+extension are applied with `shell_toggle_bg`; the unchecked hover/focus override
+is enabled by `shell_toggle_focus_fg` itself. Shared roles and Shell defaults
+provide the fallback behavior, leaving the minimal `nile-blue` definition and
+its original appearance unchanged.
 
 The 18px window dots use `tulip_tree` for minimize, `cascade` for maximize,
 `carmine` for close and `bronco` when inactive. Their source glyphs live in
@@ -75,8 +118,8 @@ folders. Native hit targets and header sizing are retained.
 The GTK 4 user layer paints toolbar backgrounds outside backdrop-faded handles.
 Its single 1px outline becomes an opaque darker mix when inactive, keeping the
 same edge color over light and dark surfaces. Switches and grouped choices use
-blue control roles independently of warm selection colors. Some vendored artwork
-retains its upstream colors.
+blue control roles independently of warm selection colors (`ocean` for Brown).
+Some vendored artwork retains its upstream colors.
 
 `$gp-folder-color` is reserved for future artwork; it does not recolor the icon
 theme. Fully dark and high-contrast variants are not currently provided.
@@ -85,7 +128,7 @@ theme. Fully dark and high-contrast variants are not currently provided.
 
 ```text
 theme-variant             Plain local variant ID (nile-blue by default)
-theme-variants.json        Variant names and sidebar palette-variable mappings
+theme-variants.json        Variant names and optional semantic-role overrides
 color-palette.json          Shared raw palette
 scss/_variant.scss         Generated variant assignments; do not edit
 scss/_roles.scss           Shared semantic roles
@@ -158,6 +201,15 @@ that variant's identity and colors. Keep the folder name when extracting into
 No Git command is required; packaging also works from an extracted source package.
 It includes current files, including uncommitted source edits, so review changes
 before release. Standalone builds leave local root styles and desktop settings alone.
+
+There is no single runtime variant switch. Copy a standalone output directory or
+extract its archive into `~/.themes/`, preserving the exact `Viparu-Nile-Blue/`
+or `Viparu-Brown/` name. Select matching **Legacy Applications** and **Shell**
+themes separately in Tweaks (with User Themes enabled for Shell), and explicitly
+run `./install-gtk.sh --update` from the destination folder for the libadwaita
+user layer. Shared installer state preserves the current link/copy mode and the
+original pre-Viparu backups; do not uninstall first or rename that state.
+See [the usage guide](USAGE.md#switching-variants-or-migrating-from-viparu).
 
 An explicit list of project paths excludes `.git/`, `.build-tools/`, `dist/`,
 Shell `.build/` staging and Python caches. Local config backups and diagnostic

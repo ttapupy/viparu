@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 FILES = (
     "README.md", "USAGE.md", "DEVELOPMENT.md", "THIRD_PARTY.md", "LICENSE", "screenshot.png",
     "index.theme", "install-gtk.sh", "color-palette.json", "color-palette.scss",
-    "theme-variants.json", "theme-variant",
+    "theme-variants.json", "theme-variant", "screenshot_brown.png",
 )
 DIRECTORIES = (
     "assets", "common", "gnome-shell", "gtk-3.0", "gtk-4.0", "licenses",
@@ -28,15 +28,17 @@ def load_variants(root=ROOT):
             raise ValueError(f"Invalid variant ID: {key!r}")
         required = {"name", "sidebar_base", "sidebar_hover"}
         if (not isinstance(variant, dict) or not required.issubset(variant)
-                or set(variant) - required - {"shell_accent", "shell_toggle_bg", "shell_toggle_fg", "sidebar_selection"}):
+                or set(variant) - required - {"shell_accent", "shell_toggle_bg", "shell_toggle_fg", "sidebar_selection", "sidebar_tint", "swap_content_surfaces", "gtk_accent", "shell_toggle_focus_fg"}):
             raise ValueError(f"Invalid variant definition: {key}")
+        if "swap_content_surfaces" in variant and not isinstance(variant["swap_content_surfaces"], bool):
+            raise ValueError(f"swap_content_surfaces must be a boolean: {key}")
         name = variant["name"]
         if not isinstance(name, str) or not re.fullmatch(r"Viparu-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*", name):
             raise ValueError(f"Invalid theme name: {name!r}")
         if name in names:
             raise ValueError(f"Duplicate theme name: {name}")
         names.add(name)
-        for role in ("sidebar_base", "sidebar_hover", "shell_accent", "shell_toggle_bg", "shell_toggle_fg", "sidebar_selection"):
+        for role in ("sidebar_base", "sidebar_hover", "shell_accent", "shell_toggle_bg", "shell_toggle_fg", "sidebar_selection", "sidebar_tint", "gtk_accent", "shell_toggle_focus_fg"):
             if role not in variant:
                 continue
             color = variant[role]
@@ -55,9 +57,12 @@ def selected_variant(root=ROOT):
 
 def generate_variant(root=ROOT):
     key, variant = selected_variant(root)
+    base = f"${variant['sidebar_base']}"
+    if "sidebar_tint" in variant:
+        base = f"mix({base}, ${variant['sidebar_tint']}, 80%)"
     assignments = (
         "// Generated from theme-variants.json and theme-variant; do not edit.\n"
-        f"$gp-sidebar-base: ${variant['sidebar_base']};\n"
+        f"$gp-sidebar-base: {base};\n"
         f"$gp-sidebar-hover-color: ${variant['sidebar_hover']};\n"
     )
     if "shell_accent" in variant:
@@ -66,8 +71,16 @@ def generate_variant(root=ROOT):
         assignments += f"$gp-shell-toggle-bg: ${variant['shell_toggle_bg']};\n"
     if "shell_toggle_fg" in variant:
         assignments += f"$gp-shell-toggle-fg: ${variant['shell_toggle_fg']};\n"
+    if "shell_toggle_focus_fg" in variant:
+        assignments += f"$gp-shell-toggle-focus-fg: ${variant['shell_toggle_focus_fg']};\n"
     if "sidebar_selection" in variant:
         assignments += f"$gp-sidebar-selection-bg: ${variant['sidebar_selection']};\n"
+    if "swap_content_surfaces" in variant:
+        value = str(variant["swap_content_surfaces"]).lower()
+        assignments += f"$gp-swap-content-surfaces: {value};\n"
+    if "gtk_accent" in variant:
+        assignments += f"$gp-accent-bg: ${variant['gtk_accent']};\n"
+        assignments += f"$gp-control-accent-bg: ${variant['gtk_accent']};\n"
     (root / "scss/_variant.scss").write_text(assignments, encoding="utf-8")
     name = variant["name"]
     (root / "index.theme").write_text(

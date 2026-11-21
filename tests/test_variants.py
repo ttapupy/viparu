@@ -3,6 +3,7 @@
 import configparser
 import importlib.util
 import json
+import re
 from pathlib import Path
 import shutil
 import sys
@@ -24,6 +25,43 @@ def load_script(name, filename):
 
 variants = load_script("variant_test_helpers", "theme_variants.py")
 builder = load_script("variant_test_builder", "build-theme.py")
+
+# Public configuration keys and their generated semantic assignments.
+OPTIONAL_MAPPINGS = {
+    "shell_accent": ("gp-shell-accent-override",),
+    "shell_toggle_bg": ("gp-shell-toggle-bg",),
+    "shell_toggle_fg": ("gp-shell-toggle-fg",),
+    "shell_toggle_focus_fg": ("gp-shell-toggle-focus-fg",),
+    "sidebar_selection": ("gp-sidebar-selection-bg",),
+    "gtk_accent": ("gp-accent-bg", "gp-control-accent-bg"),
+}
+PALETTE_ROLES = ("sidebar_base", "sidebar_hover", "sidebar_tint", *OPTIONAL_MAPPINGS)
+
+
+def expected_assignments(definition):
+    base = f"${definition['sidebar_base']}"
+    if "sidebar_tint" in definition:
+        base = f"mix({base}, ${definition['sidebar_tint']}, 80%)"
+    result = {"gp-sidebar-base": base,
+              "gp-sidebar-hover-color": f"${definition['sidebar_hover']}"}
+    for option, roles in OPTIONAL_MAPPINGS.items():
+        if option in definition:
+            result.update({role: f"${definition[option]}" for role in roles})
+    if "swap_content_surfaces" in definition:
+        result["gp-swap-content-surfaces"] = str(definition["swap_content_surfaces"]).lower()
+    return result
+
+
+def scss_assignments(root):
+    text = (root / "scss/_variant.scss").read_text(encoding="utf-8")
+    lines = [line for line in text.splitlines() if line and not line.startswith("//")]
+    matches = [re.fullmatch(r"\$([a-z-]+): (.+);", line) for line in lines]
+    if not all(matches):
+        raise AssertionError(f"Unexpected generated SCSS: {text}")
+    result = {match[1]: match[2] for match in matches}
+    if len(result) != len(lines):
+        raise AssertionError("Duplicate generated SCSS assignments")
+    return result
 
 
 class VariantTests(unittest.TestCase):
@@ -51,14 +89,15 @@ class VariantTests(unittest.TestCase):
         self.assertEqual(set(self.definitions), {"nile-blue", "brown"})
         self.assertEqual(variants.selected_variant(self.root),
                          ("nile-blue", self.definitions["nile-blue"]))
-        self.assertEqual(self.definitions["nile-blue"], {
-            "name": "Viparu-Nile-Blue", "sidebar_base": "chathams_blue",
-            "sidebar_hover": "silk_blue",
-        })
-        self.assertEqual(self.definitions["brown"], {
-            "name": "Viparu-Brown", "sidebar_base": "english_walnut",
-            "sidebar_hover": "rose_taupe",
-        })
+        palette = json.loads((self.root / "color-palette.json").read_text())
+        for key, definition in self.definitions.items():
+            with self.subTest(variant=key):
+                self.assertEqual(definition["name"], {
+                    "nile-blue": "Viparu-Nile-Blue", "brown": "Viparu-Brown"}[key])
+                for role in PALETTE_ROLES:
+                    if role in definition:
+                        self.assertIn(definition[role], palette)
+                self.assertIsInstance(definition.get("swap_content_surfaces", False), bool)
 
     def test_generated_scss_and_metadata_for_each_variant(self):
         original_selector = (self.root / "theme-variant").read_bytes()
@@ -71,10 +110,7 @@ class VariantTests(unittest.TestCase):
                 self.assertEqual(variants.generate_variant(target), key)
                 self.assertEqual(variants.selected_variant(target), (key, definition))
                 scss = (target / "scss/_variant.scss").read_text()
-                self.assertEqual(scss.splitlines()[1:], [
-                    f"$gp-sidebar-base: ${definition['sidebar_base']};",
-                    f"$gp-sidebar-hover-color: ${definition['sidebar_hover']};",
-                ])
+                self.assertEqual(scss_assignments(target), expected_assignments(definition))
                 metadata = configparser.ConfigParser()
                 metadata.read(target / "index.theme")
                 self.assertEqual(metadata["Desktop Entry"]["Name"], definition["name"])
@@ -120,14 +156,57 @@ class VariantTests(unittest.TestCase):
                     variants.load_variants(self.root)
 
     def test_rejects_unknown_or_unsafe_palette_references(self):
-        for role in ("sidebar_base", "sidebar_hover"):
+        for role in PALETTE_ROLES:
             for color in ("missing_color", "$english_walnut", "english-walnut",
-                          "rose_taupe;", "", None, 1):
+                          "rose_taupe;", "linen\n", "LINEN", "#ffffff", "", None,
+                          1, 0.5, True, False, [], {}):
                 with self.subTest(role=role, color=color):
                     definition = dict(self.definitions["brown"], **{role: color})
                     self.write_variants({"brown": definition})
                     with self.assertRaisesRegex(ValueError, "Unknown palette color"):
                         variants.load_variants(self.root)
+
+    def fixture_definition(self, **options):
+        return dict(name="Viparu-Fixture", sidebar_base="linen", sidebar_hover="silver",
+                    **options)
+
+    def test_optional_mapping_fixtures_and_removal_do_not_leave_stale_roles(self):
+        minimal = self.fixture_definition()
+        for option, roles in OPTIONAL_MAPPINGS.items():
+            with self.subTest(option=option):
+                self.write_variants({"nile-blue": dict(minimal, **{option: "carmine"})})
+                variants.generate_variant(self.root)
+                expected = {"gp-sidebar-base": "$linen", "gp-sidebar-hover-color": "$silver"}
+                expected.update({role: "$carmine" for role in roles})
+                self.assertEqual(scss_assignments(self.root), expected)
+                self.write_variants({"nile-blue": minimal})
+                variants.generate_variant(self.root)
+                self.assertEqual(scss_assignments(self.root), {
+                    "gp-sidebar-base": "$linen", "gp-sidebar-hover-color": "$silver"})
+
+    def test_sidebar_tint_is_twenty_percent_not_eighty_percent(self):
+        self.write_variants({"nile-blue": self.fixture_definition(sidebar_tint="carmine")})
+        variants.generate_variant(self.root)
+        self.assertEqual(scss_assignments(self.root), {
+            "gp-sidebar-base": "mix($linen, $carmine, 80%)",
+            "gp-sidebar-hover-color": "$silver"})
+
+    def test_swap_content_surfaces_accepts_both_booleans(self):
+        for value in (True, False):
+            with self.subTest(value=value):
+                self.write_variants({"nile-blue": self.fixture_definition(swap_content_surfaces=value)})
+                self.assertIs(variants.load_variants(self.root)["nile-blue"]["swap_content_surfaces"], value)
+                variants.generate_variant(self.root)
+                self.assertEqual(scss_assignments(self.root), {
+                    "gp-sidebar-base": "$linen", "gp-sidebar-hover-color": "$silver",
+                    "gp-swap-content-surfaces": "true" if value else "false"})
+
+    def test_swap_content_surfaces_rejects_nonbooleans(self):
+        for value in (None, 0, 1, 0.0, "true", "false", "", [], {}):
+            with self.subTest(value=value):
+                self.write_variants({"nile-blue": self.fixture_definition(swap_content_surfaces=value)})
+                with self.assertRaisesRegex(ValueError, "swap_content_surfaces must be a boolean"):
+                    variants.load_variants(self.root)
 
     def test_rejects_duplicate_theme_names(self):
         definitions = {key: dict(value) for key, value in self.definitions.items()}

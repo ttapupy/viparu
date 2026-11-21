@@ -8,6 +8,7 @@
 // Allow active quick toggles to differ from sliders and other Shell accents.
 $gp-shell-toggle-bg: null !default;
 $gp-shell-toggle-fg: $gp-shell-accent-fg !default;
+$gp-shell-toggle-focus-fg: null !default;
 @if $gp-shell-toggle-bg != null {
   @each $selector, $background in (
     '.quick-toggle:checked': $gp-shell-toggle-bg,
@@ -19,10 +20,30 @@ $gp-shell-toggle-fg: $gp-shell-accent-fg !default;
       &:hover { @include button(hover, $c: $background, $tc: $gp-shell-toggle-fg, $style: default); }
       &:active { @include button(active, $c: $background, $tc: $gp-shell-toggle-fg, $style: default); }
       &:insensitive { @include button(insensitive, $c: $background, $tc: $gp-shell-toggle-fg, $style: default); }
+      @if $gp-shell-toggle-focus-fg != null {
+        &:hover, &:focus { color: $gp-shell-toggle-focus-fg; }
+        &:insensitive:hover, &:insensitive:focus {
+          @include button(insensitive, $c: $background, $tc: $gp-shell-toggle-fg, $style: default);
+        }
+      }
     }
   }
 
   .quick-toggle-has-menu:checked .quick-toggle-separator {
     background-color: mix($gp-shell-toggle-fg, $gp-shell-toggle-bg, 30%);
+  }
+}
+
+@if $gp-shell-toggle-focus-fg != null {
+  // A pale surface keeps the dark hover text readable on unchecked toggles.
+  $toggle-hover-bg: mix($silver, $linen, 70%);
+  .quick-toggle, .quick-toggle-has-menu .quick-toggle-menu-button {
+    &:hover, &:focus {
+      color: $gp-shell-toggle-focus-fg;
+      background-color: $toggle-hover-bg;
+    }
+    &:insensitive:hover, &:insensitive:focus {
+      @include button(insensitive);
+    }
   }
 }

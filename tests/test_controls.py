@@ -2,9 +2,10 @@
 
 import colorsys
 import itertools
+import json
 import unittest
 
-from gtk_test_support import GtkTestCase, SCHEMES, STYLESHEETS
+from gtk_test_support import GtkTestCase, ROOT, SCHEMES, STYLESHEETS
 
 
 def shade(color, delta):
@@ -16,6 +17,11 @@ def shade(color, delta):
 class ControlsTests(GtkTestCase):
     def test_sidebar_labels_and_selection(self):
         Gtk = self.Gtk
+        key = (ROOT / "theme-variant").read_text(encoding="utf-8").strip()
+        definition = json.loads((ROOT / "theme-variants.json").read_text(encoding="utf-8"))[key]
+        palette = json.loads((ROOT / "color-palette.json").read_text(encoding="utf-8"))
+        selection = palette[definition.get("sidebar_selection", "warm_orange")]
+        selection = tuple(int(selection[i:i + 2], 16) for i in (1, 3, 5)) + (255,)
         for stylesheet, scheme, kind in itertools.product(
                 STYLESHEETS, SCHEMES, ("sidebar", "navigation-sidebar", "stacksidebar")):
             with self.subTest(css=stylesheet, scheme=scheme, sidebar=kind), \
@@ -57,8 +63,9 @@ class ControlsTests(GtkTestCase):
                                     expected = shade(self.role_color(content, "gp-control-hover-bg"), -0.05)
                                     self.assert_color_close(self.background(row), expected)
                                 else:
-                                    role = "gp-selection-hover-bg" if state & Gtk.StateFlags.PRELIGHT else "gp-selection-bg"
-                                    self.assertEqual(self.background(row), self.role_color(content, role))
+                                    expected = (self.role_color(content, "gp-selection-hover-bg")
+                                                if state & Gtk.StateFlags.PRELIGHT else selection)
+                                    self.assertEqual(self.background(row), expected)
 
     def test_checked_linked_toggle_uses_independent_blue_control_roles(self):
         Gtk = self.Gtk

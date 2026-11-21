@@ -2,10 +2,12 @@
 @import '../color-palette';
 @import 'variant';
 
-// Large light surfaces share the file view's pale background.
-$gp-view-bg: mix($white, $linen, 60%);
+// Large light surfaces share the file view's background; variants may swap cards.
+$gp-swap-content-surfaces: false !default;
+$gp-pale-bg: mix($white, $linen, 60%);
+$gp-view-bg: if($gp-swap-content-surfaces, $linen, $gp-pale-bg);
 $gp-window-bg: $gp-view-bg;
-$gp-card-bg: $linen;
+$gp-card-bg: if($gp-swap-content-surfaces, $gp-pale-bg, $linen);
 $gp-fg: $almost_black;
 $gp-muted-fg: $dorado;
 $gp-border: rgba($english_walnut, 0.3);
@@ -36,7 +38,7 @@ $gp-chrome-muted-fg: $bronco;
 $gp-chrome-hover-bg: mix($dark_coral, $gp-header-bg, 35%);
 
 // Accents and states. The folder color is reserved, not an icon theme override.
-$gp-accent-bg: $bondi_blue;
+$gp-accent-bg: $bondi_blue !default;
 $gp-accent-fg: $white;
 $gp-suggested-hover-bg: mix($gp-accent-bg, $almost_black, 75%);
 $gp-suggested-active-bg: mix($gp-accent-bg, $almost_black, 60%);
@@ -50,7 +52,7 @@ $gp-focus-ring: $carmine;
 $gp-control-bg: $white;
 $gp-control-border: rgba($chathams_blue, 0.25);
 // Blue control accents are independent of warm menu and list selections.
-$gp-control-accent-bg: $silk_blue;
+$gp-control-accent-bg: $silk_blue !default;
 $gp-control-accent-fg: $white;
 $gp-control-accent-hover-bg: $petrol_blue;
 $gp-hover-bg: mix($light_orange, $gp-view-bg, 25%);

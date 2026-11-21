@@ -1,17 +1,50 @@
 # Viparu
 
-Yaru-based **GTK 3, GTK 4 and GNOME Shell themes** combining light linen content,
-dark headers, warm orange selections, blue controls and colored window dots.
-Both variants intentionally look the same in GNOME Light and Dark modes.
+Yaru-based **GTK 3, GTK 4 and GNOME Shell themes** combining light content,
+dark headers, warm selections, blue controls and colored window dots.
+Each variant has a fixed mixed light-content/dark-chrome appearance, unchanged
+between GNOME Light and Dark modes.
 
 | ID | Exact display and folder name | Sidebar |
 | --- | --- | --- |
 | `nile-blue` (default) | `Viparu-Nile-Blue` | Original petrol-blue appearance |
-| `brown` | `Viparu-Brown` | Provisional `english_walnut` base and `rose_taupe` hover |
+| `brown` | `Viparu-Brown` | Cocoa/rose-taupe brown with shared sidebar/Shell bronco hover |
 
-Brown keeps the light linen, header and control accents unchanged.
+`Viparu-Nile-Blue` preserves the original appearance unchanged. Brown uses an
+80% `cocoa` / 20% `rose_taupe` sidebar base, then the existing 60% base / 40%
+`almost_black` darkening. Sidebar/Shell hover shares the `bronco` role (mixed
+85% with 15% sidebar background). Brown uses `tulip_tree` gold for sidebar
+selection, Shell accents and active quick-toggle backgrounds; active toggle
+text/icons use `chathams_blue`. Enabled toggles, checked or unchecked, use
+`brownish_red` text/icons on hover and keyboard focus. Only unchecked toggles
+receive a 70% `silver` / 30% `linen` hover/focus background; active toggles retain
+their gold background.
 
-![Original Nile Blue appearance](screenshot.png)
+Brown also swaps GTK content/card surfaces: content is `linen`, while cards use
+the pale 60% `white` / 40% `linen` mix. Its general and control GTK accents use
+`ocean`; dark headers and window-dot colors remain unchanged.
+
+## Screenshots
+
+### Nile Blue
+
+![Viparu-Nile-Blue — original appearance](screenshot.png)
+
+### Brown
+
+![Viparu-Brown — cocoa/rose-taupe surfaces and ocean GTK accents](screenshot_brown.png)
+
+## Release notes
+
+- Two standalone themes: **Viparu-Nile-Blue** (original appearance unchanged)
+  and **Viparu-Brown** (final cocoa/rose-taupe palette and gold Shell accents).
+- Brown includes the swapped GTK surfaces, ocean GTK accents and distinct
+  quick-toggle hover/keyboard-focus states described above.
+- Both retain their fixed appearance for light and dark requests. Separate
+  screenshots above show Nile Blue and Brown.
+- Separate build folders and release archives preserve each variant's identity.
+  Switching requires explicit theme selections and a GTK 4 installer update;
+  original pre-Viparu backups are preserved.
 
 ## Quick start
 
@@ -39,8 +72,11 @@ and standard GNU/Linux file utilities; it does not download anything.
 Tweaks does not disable it.** To restore the previous GTK 4 files, run
 `./install-gtk.sh --uninstall` before removing the theme directory.
 
-To switch variants, run `./install-gtk.sh --update` **from the destination variant
-folder**, then select its matching legacy and Shell themes separately in Tweaks.
+**There is no single switch for all components.** First copy or extract the exact
+standalone `Viparu-Nile-Blue/` or `Viparu-Brown/` folder into `~/.themes/`.
+To switch variants, run `./install-gtk.sh --update` **from that destination folder**
+for the libadwaita user layer, then select its matching **Legacy Applications**
+and **Shell** themes separately in Tweaks.
 The unchanged installer shares `viparu` ownership/backup state, retaining link/copy
 mode and the original pre-Viparu backups. Existing users may keep their old
 `Viparu/` directory while migrating to the new names; no settings change automatically.

@@ -22,9 +22,21 @@ Alternatively, `python3 -B scripts/build-theme.py --variants` creates both compl
 standalone source+compiled directories in `dist/themes/`; copy them into `~/.themes/`
 without renaming them. This does not rebuild or modify local root styles or the desktop.
 
-`Viparu-Nile-Blue` is the renamed original theme. `Viparu-Brown` provisionally uses
-`english_walnut` sidebar base and `rose_taupe` hover; light linen, header and control
-accents are unchanged. Both variants retain the same appearance in light and dark modes.
+`Viparu-Nile-Blue` preserves the original appearance unchanged. See the
+[README screenshots](README.md#screenshots) for both variants: `screenshot.png`
+shows Nile Blue and `screenshot_brown.png` shows Brown. Each variant retains its
+own fixed mixed light/dark appearance for both light and dark requests.
+
+`Viparu-Brown` uses an 80% `cocoa` / 20% `rose_taupe` sidebar base, then the
+existing 60% base / 40% `almost_black` darkening. Its shared sidebar/Shell hover
+uses 85% `bronco` / 15% sidebar background. Sidebar selection, Shell accents and
+active quick-toggle backgrounds use `tulip_tree`; active toggle text/icons use
+`chathams_blue`. Enabled checked and unchecked toggles use `brownish_red`
+text/icons on hover and keyboard focus. Only unchecked toggles get a 70%
+`silver` / 30% `linen` hover/focus background; active toggles retain gold.
+GTK content is `linen`, cards use the pale 60% `white` / 40% `linen` mix, and
+both general and control GTK accents use `ocean`. Dark headers and window-dot
+colors remain unchanged.
 
 Run all installation commands as your desktop user, **not with sudo**. They do
 not require administrator access or a network connection.
@@ -145,8 +157,12 @@ Do not discard the installer's state or original backups during an update.
 
 ## Switching variants or migrating from Viparu
 
-Keep the destination's exact folder name. From **inside that destination directory**
-(for example `~/.themes/Viparu-Brown/`), run:
+**There is no single switch for all components.** Copy the built standalone
+folder or extract its release archive into `~/.themes/`, keeping the exact
+`Viparu-Nile-Blue/` or `Viparu-Brown/` folder name. Select the destination's
+**Legacy Applications** and **Shell** themes separately in Tweaks (Shell needs
+User Themes). For the libadwaita user layer, explicitly run the installer from
+**inside that destination directory** (for example `~/.themes/Viparu-Brown/`):
 
 ```sh
 ./install-gtk.sh --update
