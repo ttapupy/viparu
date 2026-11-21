@@ -279,6 +279,236 @@ class VariantTests(unittest.TestCase):
         for path, content in before.items():
             self.assertEqual((self.root / path).read_bytes(), content)
 
+    def output_targets(self):
+        return [self.root / "dist/themes" / value["name"]
+                for value in self.definitions.values()]
+
+    def seed_outputs(self):
+        targets = self.output_targets()
+        for index, target in enumerate(targets):
+            (target / "nested").mkdir(parents=True)
+            (target / "nested/sentinel").write_bytes(f"old output {index}".encode())
+        return targets
+
+    def tree_snapshot(self, root):
+        return {path.relative_to(root):
+                ("symlink", path.readlink()) if path.is_symlink() else
+                ("directory", None) if path.is_dir() else ("file", path.read_bytes())
+                for path in root.rglob("*")}
+
+    def make_invalid_output(self, path, kind, external):
+        if kind == "file":
+            path.write_bytes(b"not a directory")
+        else:
+            path.symlink_to(external if kind == "directory symlink"
+                            else external / "missing", target_is_directory=True)
+
+    def test_invalid_second_output_rejected_before_any_build_work(self):
+        first, second = self.seed_outputs()
+        before = self.tree_snapshot(first)
+        shutil.rmtree(second)
+        external = self.directory / "external"
+        external.mkdir()
+        (external / "sentinel").write_bytes(b"external data")
+        external_before = self.tree_snapshot(external)
+        for kind in ("file", "directory symlink", "dangling symlink"):
+            with self.subTest(kind=kind):
+                self.make_invalid_output(second, kind, external)
+                try:
+                    with patch.object(builder, "ROOT", self.root), \
+                            patch.object(builder, "compiler_command", side_effect=AssertionError(
+                                "Compiler lookup ran before output preflight")) as compiler, \
+                            patch.object(builder, "copy_project") as copy, \
+                            patch.object(builder, "build") as build:
+                        with self.assertRaises(ValueError):
+                            builder.build_variants()
+                        compiler.assert_not_called()
+                        copy.assert_not_called()
+                        build.assert_not_called()
+                    self.assertEqual(self.tree_snapshot(first), before)
+                    self.assertEqual(self.tree_snapshot(external), external_before)
+                    if kind == "file":
+                        self.assertEqual(second.read_bytes(), b"not a directory")
+                    else:
+                        self.assertTrue(second.is_symlink())
+                finally:
+                    second.unlink()
+
+    def test_invalid_output_containers_rejected_before_any_build_work(self):
+        external = self.directory / "external"
+        external.mkdir()
+        (external / "sentinel").write_bytes(b"external data")
+        before = self.tree_snapshot(external)
+        for relative in ("dist", "dist/themes"):
+            container = self.root / relative
+            container.parent.mkdir(parents=True, exist_ok=True)
+            for kind in ("file", "directory symlink", "dangling symlink"):
+                with self.subTest(container=relative, kind=kind):
+                    self.make_invalid_output(container, kind, external)
+                    try:
+                        with patch.object(builder, "ROOT", self.root), \
+                                patch.object(builder, "compiler_command", side_effect=AssertionError(
+                                    "Compiler lookup ran before output preflight")) as compiler, \
+                                patch.object(builder, "copy_project") as copy, \
+                                patch.object(builder, "build") as build:
+                            with self.assertRaises(ValueError):
+                                builder.build_variants()
+                            compiler.assert_not_called()
+                            copy.assert_not_called()
+                            build.assert_not_called()
+                        self.assertEqual(self.tree_snapshot(external), before)
+                        if kind == "file":
+                            self.assertEqual(container.read_bytes(), b"not a directory")
+                        else:
+                            self.assertTrue(container.is_symlink())
+                    finally:
+                        container.unlink()
+
+    def test_outputs_revalidated_after_final_staged_build_before_replacement(self):
+        external = self.directory / "external"
+        external.mkdir()
+        (external / "sentinel").write_bytes(b"external data")
+        external_before = self.tree_snapshot(external)
+        saved = self.directory / "saved-second-output"
+        for kind in ("file", "directory symlink", "dangling symlink"):
+            with self.subTest(kind=kind):
+                targets = self.seed_outputs()
+                before = [self.tree_snapshot(target) for target in targets]
+                calls = []
+
+                def mock_build(theme, compiler, environment):
+                    calls.append(theme)
+                    (theme / "built-marker").write_bytes(b"new output")
+                    if len(calls) == len(targets):
+                        # Simulate an output changing while the final build runs.
+                        targets[1].rename(saved)
+                        self.make_invalid_output(targets[1], kind, external)
+
+                try:
+                    with patch.object(builder, "ROOT", self.root), \
+                            patch.object(builder, "compiler_command", return_value=("mock-sassc", {})), \
+                            patch.object(builder, "build", side_effect=mock_build):
+                        with self.assertRaises(ValueError):
+                            builder.build_variants()
+                    self.assertEqual(len(calls), len(targets))
+                    self.assertTrue((targets[0] / "nested/sentinel").is_file(),
+                                    "First output was replaced before all targets were revalidated")
+                    self.assertEqual(self.tree_snapshot(targets[0]), before[0])
+                    self.assertEqual(self.tree_snapshot(saved), before[1])
+                    self.assertEqual(self.tree_snapshot(external), external_before)
+                    if kind == "file":
+                        self.assertEqual(targets[1].read_bytes(), b"not a directory")
+                    else:
+                        self.assertTrue(targets[1].is_symlink())
+                finally:
+                    for target in targets:
+                        if target.is_symlink() or target.is_file():
+                            target.unlink()
+                        elif target.exists():
+                            shutil.rmtree(target)
+                    if saved.exists():
+                        shutil.rmtree(saved)
+
+    def test_staged_build_failure_preserves_all_previous_outputs(self):
+        targets = self.seed_outputs()
+        before = [self.tree_snapshot(target) for target in targets]
+        calls = []
+
+        def mock_build(theme, compiler, environment):
+            calls.append(theme)
+            (theme / "built-marker").write_bytes(b"partial new output")
+            if len(calls) == len(targets):
+                raise RuntimeError("mock final build failed")
+
+        with patch.object(builder, "ROOT", self.root), \
+                patch.object(builder, "compiler_command", return_value=("mock-sassc", {})), \
+                patch.object(builder, "build", side_effect=mock_build):
+            with self.assertRaisesRegex(RuntimeError, "mock final build failed"):
+                builder.build_variants()
+        self.assertEqual(len(calls), len(targets))
+        for target, snapshot in zip(targets, before):
+            self.assertEqual(self.tree_snapshot(target), snapshot)
+
+    def test_replacing_old_outputs_does_not_follow_nested_symlinks(self):
+        targets = self.seed_outputs()
+        external = self.directory / "external"
+        external.mkdir()
+        sentinel = external / "sentinel"
+        sentinel.write_bytes(b"external data")
+        for target in targets:
+            (target / "nested/directory-link").symlink_to(external, target_is_directory=True)
+            (target / "nested/file-link").symlink_to(sentinel)
+            (target / "nested/broken-link").symlink_to(external / "missing")
+        before = self.tree_snapshot(external)
+
+        def mock_build(theme, compiler, environment):
+            (theme / "built-marker").write_bytes(b"new output")
+
+        with patch.object(builder, "ROOT", self.root), \
+                patch.object(builder, "compiler_command", return_value=("mock-sassc", {})), \
+                patch.object(builder, "build", side_effect=mock_build):
+            self.assertEqual(builder.build_variants(), targets)
+        self.assertEqual(self.tree_snapshot(external), before)
+        for target in targets:
+            self.assertEqual((target / "built-marker").read_bytes(), b"new output")
+            self.assertFalse((target / "nested").exists())
+            self.assertFalse(any(path.is_symlink() for path in target.rglob("*")))
+
+    def test_included_source_symlinks_are_rejected_without_copying(self):
+        external = self.directory / "external"
+        external.mkdir()
+        sentinel = external / "sentinel"
+        sentinel.write_bytes(b"external data")
+        package_theme = load_script("variant_test_packager", "package-theme.py")
+        for kind, source in (("file", sentinel), ("directory", external),
+                             ("broken", external / "missing")):
+            with self.subTest(kind=kind):
+                link = self.root / "scss/included-link"
+                link.symlink_to(source, target_is_directory=kind == "directory")
+                destination = self.directory / f"rejected-{kind}"
+                try:
+                    with self.assertRaisesRegex(ValueError, "[Ss]ymlink"):
+                        variants.project_files(self.root)
+                    with self.assertRaisesRegex(ValueError, "[Ss]ymlink"):
+                        package_theme.package_files(self.root)
+                    with self.assertRaisesRegex(ValueError, "[Ss]ymlink"):
+                        variants.copy_project(destination, next(iter(self.definitions)), self.root)
+                    self.assertFalse(destination.exists())
+                    self.assertEqual(sentinel.read_bytes(), b"external data")
+                finally:
+                    link.unlink()
+
+    def test_excluded_source_symlinks_are_ignored_not_copied(self):
+        external = self.directory / "external"
+        external.mkdir()
+        sentinel = external / "sentinel"
+        sentinel.write_bytes(b"external data")
+        expected = {path.relative_to(self.root) for path in variants.project_files(self.root)}
+        # Directory links, including dangling ones, must never be traversed.
+        for relatives, source in (
+                (("scss/.hidden", "gnome-shell/.build", "scripts/__pycache__"), external),
+                (("scss/.broken", "scss/.build", "tests/__pycache__"), external / "missing")):
+            for relative in relatives:
+                (self.root / relative).symlink_to(source, target_is_directory=True)
+        for suffix in (".pyc", ".pyo"):
+            for name, source in (("normal", sentinel), ("broken", external / "missing")):
+                (self.root / "scripts" / (name + suffix)).symlink_to(source)
+        hidden = self.root / "scss/.hidden-contents"
+        hidden.mkdir()
+        (hidden / "normal").symlink_to(sentinel)
+        (hidden / "broken").symlink_to(external / "missing")
+        self.assertEqual({path.relative_to(self.root) for path in variants.project_files(self.root)},
+                         expected)
+        package_theme = load_script("variant_test_packager_exclusions", "package-theme.py")
+        self.assertEqual({path.relative_to(self.root) for path in package_theme.package_files(self.root)},
+                         expected)
+        destination = self.directory / "excluded-links-copy"
+        variants.copy_project(destination, next(iter(self.definitions)), self.root)
+        self.assertEqual({path.relative_to(destination) for path in destination.rglob("*")
+                          if path.is_file()}, expected)
+        self.assertFalse(any(path.is_symlink() for path in destination.rglob("*")))
+        self.assertEqual(sentinel.read_bytes(), b"external data")
+
     def test_unknown_build_variant_rejected_before_compiler(self):
         with patch.object(builder, "ROOT", self.root), \
                 patch.object(builder, "compiler_command") as compiler, \

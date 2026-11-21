@@ -98,6 +98,15 @@ def build(root, compiler, environment):
         print(f"Resolved {len(assets)} local theme assets", flush=True)
 
 
+def validate_output_directories(paths):
+    """Reject unsafe output roots before any existing variant is replaced."""
+    for path in paths:
+        if path.is_symlink():
+            raise ValueError(f"Refusing to replace theme output symlink: {path}")
+        if path.exists() and not path.is_dir():
+            raise ValueError(f"Theme output must be a directory: {path}")
+
+
 def build_variants(keys=None):
     """Stage complete, independently rebuildable themes; leave local CSS untouched."""
     variants = load_variants(ROOT)
@@ -105,8 +114,11 @@ def build_variants(keys=None):
     for key in keys:
         if key not in variants:
             raise ValueError(f"Unknown theme variant: {key!r}")
-    compiler, environment = compiler_command()
     destination = ROOT / "dist/themes"
+    targets = [destination / variants[key]["name"] for key in keys]
+    output_directories = [destination.parent, destination, *targets]
+    validate_output_directories(output_directories)
+    compiler, environment = compiler_command()
     destination.mkdir(parents=True, exist_ok=True)
     # Do not replace previously usable outputs unless every requested build succeeds.
     with tempfile.TemporaryDirectory(prefix=".variants-", dir=destination.parent) as directory:
@@ -115,15 +127,14 @@ def build_variants(keys=None):
             theme = staging / variants[key]["name"]
             copy_project(theme, key, ROOT)
             build(theme, compiler, environment)
-        for key in keys:
-            name = variants[key]["name"]
-            target = destination / name
-            if target.is_symlink():
-                raise ValueError(f"Refusing to replace theme output symlink: {target}")
+        # Recheck every target together: a late invalid target must not leave
+        # earlier variants replaced. This is not a multi-directory transaction.
+        validate_output_directories(output_directories)
+        for key, target in zip(keys, targets):
             if target.exists():
                 shutil.rmtree(target)
-            (staging / name).replace(target)
-    return [destination / variants[key]["name"] for key in keys]
+            (staging / variants[key]["name"]).replace(target)
+    return targets
 
 
 def main():

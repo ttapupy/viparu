@@ -213,9 +213,21 @@ See [the usage guide](USAGE.md#switching-variants-or-migrating-from-viparu).
 
 An explicit list of project paths excludes `.git/`, `.build-tools/`, `dist/`,
 Shell `.build/` staging and Python caches. Local config backups and diagnostic
-screenshots must never be distributed. Symlinks inside package inputs are
-rejected rather than silently embedding external files. The previous archive is
-replaced only after the new archive has been written successfully.
+screenshots must never be distributed. Symlinks in included package inputs are
+rejected rather than silently embedding external files. Links in excluded paths
+are ignored along with those paths: they are neither followed nor copied.
+Copying and packaging use the same `project_files()` enumeration.
+
+Standalone builds validate `dist/`, `dist/themes/` and every requested variant's
+existing output path before building and again before replacing any output.
+These paths must be real directories or absent, not files or symlinks (including
+dangling links). Links inside old output directories are removed without following
+them when those outputs are replaced. All requested builds must succeed first;
+invalid destinations found by preflight leave existing variants untouched.
+Replacement is not a multi-directory transaction: concurrent filesystem changes
+or I/O failures during replacement can still leave partially updated outputs.
+The previous archive is replaced only after the new archive has been written
+successfully.
 
 Before publishing:
 
@@ -252,3 +264,28 @@ The checks cover control states, header backgrounds and native layout, window
 outlines/artwork, CSS parsing, assets, palette generation, packaging and installer
 backup continuity. They are never invoked by builds or packaging. Passing these
 checks does not replace manual application/Shell compatibility checks.
+
+### GNOME Shell 51 manual release checklist
+
+`tests/test_shell_states.py` inspects the compiled CSS and models the relevant
+selector cascade. It does not run GNOME Shell's St CSS engine, render Shell
+widgets or simulate input. Compilation and these static checks do not by
+themselves establish runtime compatibility.
+
+On the targeted GNOME Shell 51 session, select each variant and check:
+
+- Enabled quick toggles in both checked and unchecked states: normal, pointer
+  hover, pointer exit, keyboard focus and focus exit.
+- Split toggles: the main button and its separate menu-arrow button, including
+  pointer movement between the halves.
+- A genuinely disabled/insensitive control (not just an unchecked toggle): hover
+  must not restore enabled text colors or an enabled-looking background. Mark
+  this case unverified if the session offers no such control; do not disable
+  hardware or alter unrelated desktop settings merely to manufacture one.
+- Brown: checked controls retain gold backgrounds; unchecked hover/focus uses
+  the pale silver/linen background, with readable brownish-red text/icons.
+- Nile Blue: no Brown-specific hover or focus colors leak into its appearance.
+
+Record the actual Shell version, relevant extensions and checked states with
+release notes. Screenshots establish only the visible states they capture; do
+not describe unexercised keyboard or insensitive states as runtime-tested.
