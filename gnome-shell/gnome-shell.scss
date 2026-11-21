@@ -6,6 +6,7 @@ $contrast: 'normal';
 // Shell-only aliases also color the prepared upstream accent expressions.
 $gp-accent-bg: $gp-shell-accent-bg;
 $gp-accent-fg: $gp-shell-accent-fg;
+$gp-accent-on-dark: if($gp-shell-accent-override != null, $gp-shell-accent-bg, $gp-accent-on-dark);
 @import '../common/sass-utils';
 @import 'gp-colors';
 

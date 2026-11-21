@@ -17,7 +17,11 @@ From the project root:
 python3 -B scripts/build-theme.py
 ```
 
-The build generates the palette, prepares Shell sources, compiles all styles and
+The plain `theme-variant` file selects the local theme (`nile-blue` by default).
+The default command rebuilds only that selection as before. An extracted variant's
+own `theme-variant` preserves its identity and colors on a default rebuild.
+
+The build generates the palette and variant assignments, prepares Shell sources, compiles all styles and
 checks every image URL before publishing the compiled CSS and referenced assets.
 GTK runtime URLs stay within each component's `assets/` directory. Only images
 referenced by the compiled styles are copied from the vendored source artwork.
@@ -27,13 +31,84 @@ In a linked GTK 4 installation its new outputs are visible through the existing
 links, so restart applications to load them. Copy installations need an explicit
 `./install-gtk.sh --update`.
 
+## Standalone variant builds
+
+```sh
+python3 -B scripts/build-theme.py --variants
+```
+
+This builds **both** complete standalone source+compiled theme directories:
+
+```text
+dist/themes/Viparu-Nile-Blue/
+dist/themes/Viparu-Brown/
+```
+
+It does not rebuild or modify local root styles or the desktop. Each directory
+includes its own `theme-variant` and can be copied directly into `~/.themes/`.
+Keep the exact display/folder names `Viparu-Nile-Blue` and `Viparu-Brown`.
+To build only one standalone copy, use `--variant brown` or `--variant nile-blue`
+instead of `--variants`. Neither option changes the local `theme-variant` selection.
+
 ## Palette and customization
 
-- Edit `color-palette.json` for raw colors.
-- Edit `scss/_roles.scss` for semantic assignments, window-outline geometry and
-  window-control colors.
-- `color-palette.scss` is generated; do not edit it manually.
+- Edit shared `color-palette.json` for raw colors.
+- `theme-variants.json` maps `nile-blue` and `brown` IDs to exact names and
+  palette-based role overrides; see the field reference below.
+- The plain `theme-variant` file selects the root checkout's local variant.
+- Edit shared `scss/_roles.scss` for semantic assignments, window-outline geometry
+  and window-control colors.
+- `color-palette.scss` and `scss/_variant.scss` are generated; do not edit them manually.
 - `scss/_yaru-colors.scss` maps the shared roles onto Yaru's color API.
+
+`Viparu-Nile-Blue` preserves the original appearance unchanged. `Viparu-Brown`
+uses `mix($cocoa, $rose_taupe, 80%)` for its sidebar base (80% cocoa, 20%
+rose taupe), followed by the existing `mix($gp-sidebar-base, $almost_black, 60%)`
+darkening (60% base, 40% almost black). Its shared sidebar/Shell hover uses
+85% `bronco` / 15% sidebar background. `tulip_tree` supplies sidebar selection,
+Shell accents and active quick-toggle backgrounds; `chathams_blue` supplies
+active toggle text/icons. Enabled checked and unchecked toggles use
+`brownish_red` text/icons on hover and keyboard focus. Only unchecked toggles
+receive the 70% `silver` / 30% `linen` hover/focus background; active toggles
+retain gold. Disabled states retain their insensitive styling.
+
+Brown swaps GTK surfaces: `linen` content/window backgrounds and pale cards
+(60% `white` / 40% `linen`), with `ocean` for both general and control GTK accents.
+Dark headers and window-dot colors are unchanged. Each variant has a fixed
+appearance for light and dark requests. The README shows both variants:
+`screenshot.png` for Nile Blue and `screenshot_brown.png` for Brown. Both images
+are included in each release archive.
+
+### `theme-variants.json` field reference
+
+`scripts/theme_variants.py` validates and generates `scss/_variant.scss` from
+this file. Each variant requires `name` (a unique exact `Viparu-…` display/folder
+name), `sidebar_base` and `sidebar_hover`. All color fields are existing keys in
+`color-palette.json`, not literal CSS colors. Unknown fields are rejected.
+The required sidebar base is darkened with 40% `almost_black`; sidebar hover
+mixes 85% of its specified color with 15% of that darkened background and also
+supplies the shared Shell hover role.
+
+All optional fields are listed below. Omitting them retains the original Nile
+Blue defaults; no Brown overrides are implicitly applied to Nile Blue.
+
+| Optional field | Meaning | Behavior when omitted |
+| --- | --- | --- |
+| `sidebar_tint` | Mix a fixed 20% of this palette color into 80% `sidebar_base`, before the shared darkening | Use `sidebar_base` directly before darkening |
+| `sidebar_selection` | Override sidebar selection background | Shared `warm_orange` selection |
+| `shell_accent` | Override the Shell accent role | Shared `warm_orange` selection |
+| `shell_toggle_bg` | Override checked quick-toggle backgrounds (the checked menu button also mixes in Shell foreground) | No separate toggle-background override; keep ordinary Shell styling |
+| `shell_toggle_fg` | Checked quick-toggle text/icon color when the toggle-background override is enabled | Shell accent foreground (`almost_black`) |
+| `shell_toggle_focus_fg` | Text/icon color on **both hover and keyboard focus** for enabled checked and unchecked quick toggles/menu buttons; also enables the pale 70% `silver` / 30% `linen` unchecked hover/focus background. Checked toggles retain their active background | No separate hover/focus foreground or pale-background override; keep ordinary states |
+| `swap_content_surfaces` | Boolean: `true` swaps GTK content/window and card backgrounds | `false`: pale content/window backgrounds (60% `white` / 40% `linen`), `linen` cards |
+| `gtk_accent` | Maps to **both** `$gp-accent-bg` (general GTK accent) and `$gp-control-accent-bg` (control accent) | General `bondi_blue`, control `silk_blue` |
+
+Optional palette fields generate role overrides, while `swap_content_surfaces`
+must be a JSON boolean. `shell_toggle_fg` and the checked hover/focus foreground
+extension are applied with `shell_toggle_bg`; the unchecked hover/focus override
+is enabled by `shell_toggle_focus_fg` itself. Shared roles and Shell defaults
+provide the fallback behavior, leaving the minimal `nile-blue` definition and
+its original appearance unchanged.
 
 The 18px window dots use `tulip_tree` for minimize, `cascade` for maximize,
 `carmine` for close and `bronco` when inactive. Their source glyphs live in
@@ -43,8 +118,8 @@ folders. Native hit targets and header sizing are retained.
 The GTK 4 user layer paints toolbar backgrounds outside backdrop-faded handles.
 Its single 1px outline becomes an opaque darker mix when inactive, keeping the
 same edge color over light and dark surfaces. Switches and grouped choices use
-blue control roles independently of warm selection colors. Some vendored artwork
-retains its upstream colors.
+blue control roles independently of warm selection colors (`ocean` for Brown).
+Some vendored artwork retains its upstream colors.
 
 `$gp-folder-color` is reserved for future artwork; it does not recolor the icon
 theme. Fully dark and high-contrast variants are not currently provided.
@@ -52,7 +127,10 @@ theme. Fully dark and high-contrast variants are not currently provided.
 ## Source layout
 
 ```text
-color-palette.json          Raw palette
+theme-variant             Plain local variant ID (nile-blue by default)
+theme-variants.json        Variant names and optional semantic-role overrides
+color-palette.json          Shared raw palette
+scss/_variant.scss         Generated variant assignments; do not edit
 scss/_roles.scss           Shared semantic roles
 scss/_yaru-colors.scss     Yaru color mapping
 scss/_gtk3-chrome.scss     GTK 3 chrome and window controls
@@ -81,17 +159,17 @@ into the libadwaita user layer. The separate entry points are intentional.
 
 | Script | Purpose | Writes |
 | --- | --- | --- |
-| `scripts/build-theme.py` | Complete local build | Generated palette, Shell staging, compiled CSS and referenced assets |
+| `scripts/build-theme.py` | Rebuild selected local theme; `--variants` builds both standalone themes, `--variant ID` builds one instead | Local generated palette/variant assignments, Shell staging, CSS and assets; with `--variants`, `dist/themes/Viparu-Nile-Blue/` and `dist/themes/Viparu-Brown/` without rebuilding/modifying root styles |
 | `scripts/palette.py` | Generate SCSS from the JSON palette | `color-palette.scss`; `--check` is read-only |
 | `gnome-shell/prepare_sources.py` | Transform the vendored Shell source copies | `gnome-shell/.build/scss/`; `--check` is read-only |
 | `install-gtk.sh` | Explicit GTK 4 user installation and removal | Three config entries plus backup/ownership state; `--status` is read-only |
-| `scripts/package-theme.py` | Rebuild and create a clean distribution archive | Build outputs and `dist/Viparu.tar.gz` |
+| `scripts/package-theme.py` | Build and package both variants by default; optional `--variant nile-blue` or `--variant brown` | Standalone variant outputs and corresponding `dist/Viparu-Nile-Blue.tar.gz` / `dist/Viparu-Brown.tar.gz` |
 
 The vendored `scss/yaru/*/render-assets.sh` files are upstream artwork-maintenance
 helpers, not project installation/build commands. Pre-rendered artwork is
 included, so Inkscape and image optimizers are not needed for a normal build.
 
-## Create a release archive
+## Create release archives
 
 From the project root:
 
@@ -99,26 +177,57 @@ From the project root:
 python3 -B scripts/package-theme.py
 ```
 
-This rebuilds first, then creates:
+This builds and packages both variants by default:
 
 ```text
-dist/Viparu.tar.gz
+dist/Viparu-Nile-Blue.tar.gz
+dist/Viparu-Brown.tar.gz
 ```
 
-The archive contains one top-level `Viparu/` directory with
-compiled styles, runtime artwork, corresponding source files, installer,
-documentation, developer checks and license notices. No Git command is required;
-the same script works from an extracted source package. It packages the current
-files, including uncommitted source edits, so review your changes before release.
-The source checkout may have any directory name; the archive and its top-level
-folder are always named **Viparu**, matching `index.theme`. Install the extracted
-`Viparu/` folder to make the theme discoverable by that name.
+To package only one, use either command:
+
+```sh
+python3 -B scripts/package-theme.py --variant nile-blue
+python3 -B scripts/package-theme.py --variant brown
+```
+
+Each archive contains its exact top-level `Viparu-Nile-Blue/` or `Viparu-Brown/`
+directory, matching its display name and `index.theme`, with compiled styles,
+runtime artwork, corresponding sources, installer, documentation, developer checks
+and license notices. Its own `theme-variant` ensures a default rebuild preserves
+that variant's identity and colors. Keep the folder name when extracting into
+`~/.themes/`; the source checkout itself may have any directory name.
+
+No Git command is required; packaging also works from an extracted source package.
+It includes current files, including uncommitted source edits, so review changes
+before release. Standalone builds leave local root styles and desktop settings alone.
+
+There is no single runtime variant switch. Copy a standalone output directory or
+extract its archive into `~/.themes/`, preserving the exact `Viparu-Nile-Blue/`
+or `Viparu-Brown/` name. Select matching **Legacy Applications** and **Shell**
+themes separately in Tweaks (with User Themes enabled for Shell), and explicitly
+run `./install-gtk.sh --update` from the destination folder for the libadwaita
+user layer. Shared installer state preserves the current link/copy mode and the
+original pre-Viparu backups; do not uninstall first or rename that state.
+See [the usage guide](USAGE.md#switching-variants-or-migrating-from-viparu).
 
 An explicit list of project paths excludes `.git/`, `.build-tools/`, `dist/`,
 Shell `.build/` staging and Python caches. Local config backups and diagnostic
-screenshots must never be distributed. Symlinks inside package inputs are
-rejected rather than silently embedding external files. The previous archive is
-replaced only after the new archive has been written successfully.
+screenshots must never be distributed. Symlinks in included package inputs are
+rejected rather than silently embedding external files. Links in excluded paths
+are ignored along with those paths: they are neither followed nor copied.
+Copying and packaging use the same `project_files()` enumeration.
+
+Standalone builds validate `dist/`, `dist/themes/` and every requested variant's
+existing output path before building and again before replacing any output.
+These paths must be real directories or absent, not files or symlinks (including
+dangling links). Links inside old output directories are removed without following
+them when those outputs are replaced. All requested builds must succeed first;
+invalid destinations found by preflight leave existing variants untouched.
+Replacement is not a multi-directory transaction: concurrent filesystem changes
+or I/O failures during replacement can still leave partially updated outputs.
+The previous archive is replaced only after the new archive has been written
+successfully.
 
 Before publishing:
 
@@ -130,7 +239,7 @@ Before publishing:
 4. Check the appearance manually on the toolkit/Shell versions you intend to
    support. Record those versions in release notes; do not claim unverified
    compatibility.
-5. Upload the archive. Do not archive the entire development directory by hand.
+5. Upload the selected archives. Do not archive the entire development directory by hand.
 
 The packaging command neither installs the theme nor runs test suites.
 
@@ -155,3 +264,28 @@ The checks cover control states, header backgrounds and native layout, window
 outlines/artwork, CSS parsing, assets, palette generation, packaging and installer
 backup continuity. They are never invoked by builds or packaging. Passing these
 checks does not replace manual application/Shell compatibility checks.
+
+### GNOME Shell 51 manual release checklist
+
+`tests/test_shell_states.py` inspects the compiled CSS and models the relevant
+selector cascade. It does not run GNOME Shell's St CSS engine, render Shell
+widgets or simulate input. Compilation and these static checks do not by
+themselves establish runtime compatibility.
+
+On the targeted GNOME Shell 51 session, select each variant and check:
+
+- Enabled quick toggles in both checked and unchecked states: normal, pointer
+  hover, pointer exit, keyboard focus and focus exit.
+- Split toggles: the main button and its separate menu-arrow button, including
+  pointer movement between the halves.
+- A genuinely disabled/insensitive control (not just an unchecked toggle): hover
+  must not restore enabled text colors or an enabled-looking background. Mark
+  this case unverified if the session offers no such control; do not disable
+  hardware or alter unrelated desktop settings merely to manufacture one.
+- Brown: checked controls retain gold backgrounds; unchecked hover/focus uses
+  the pale silver/linen background, with readable brownish-red text/icons.
+- Nile Blue: no Brown-specific hover or focus colors leak into its appearance.
+
+Record the actual Shell version, relevant extensions and checked states with
+release notes. Screenshots establish only the visible states they capture; do
+not describe unexercised keyboard or insensitive states as runtime-tested.

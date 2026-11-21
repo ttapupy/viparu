@@ -2,10 +2,13 @@
 
 ## 1. Install the theme directory
 
-Extract `Viparu.tar.gz` into `~/.themes/`, or place the complete project at:
+Extract `Viparu-Nile-Blue.tar.gz` or `Viparu-Brown.tar.gz` into `~/.themes/`,
+keeping the exact display/folder name `Viparu-Nile-Blue` or `Viparu-Brown`.
+For example:
 
 ```text
-~/.themes/Viparu/
+~/.themes/Viparu-Nile-Blue/
+├── theme-variant
 ├── index.theme
 ├── install-gtk.sh
 ├── gtk-3.0/
@@ -15,6 +18,25 @@ Extract `Viparu.tar.gz` into `~/.themes/`, or place the complete project at:
 
 Keep the remaining source, documentation and license files as well. Compiled CSS
 and artwork are supplied; building is only necessary after changing the sources.
+Alternatively, `python3 -B scripts/build-theme.py --variants` creates both complete
+standalone source+compiled directories in `dist/themes/`; copy them into `~/.themes/`
+without renaming them. This does not rebuild or modify local root styles or the desktop.
+
+`Viparu-Nile-Blue` preserves the original appearance unchanged. See the
+[README screenshots](README.md#screenshots) for both variants: `screenshot.png`
+shows Nile Blue and `screenshot_brown.png` shows Brown. Each variant retains its
+own fixed mixed light/dark appearance for both light and dark requests.
+
+`Viparu-Brown` uses an 80% `cocoa` / 20% `rose_taupe` sidebar base, then the
+existing 60% base / 40% `almost_black` darkening. Its shared sidebar/Shell hover
+uses 85% `bronco` / 15% sidebar background. Sidebar selection, Shell accents and
+active quick-toggle backgrounds use `tulip_tree`; active toggle text/icons use
+`chathams_blue`. Enabled checked and unchecked toggles use `brownish_red`
+text/icons on hover and keyboard focus. Only unchecked toggles get a 70%
+`silver` / 30% `linen` hover/focus background; active toggles retain gold.
+GTK content is `linen`, cards use the pale 60% `white` / 40% `linen` mix, and
+both general and control GTK accents use `ocean`. Dark headers and window-dot
+colors remain unchanged.
 
 Run all installation commands as your desktop user, **not with sudo**. They do
 not require administrator access or a network connection.
@@ -22,8 +44,8 @@ not require administrator access or a network connection.
 ## 2. Enable the GNOME Shell component (optional)
 
 Install and enable the **User Themes** GNOME Shell extension using your
-distribution's extension tools. Then select **Viparu** as the Shell theme in
-GNOME Tweaks.
+distribution's extension tools. Then select **Viparu-Nile-Blue** or **Viparu-Brown**
+as the Shell theme in GNOME Tweaks.
 
 The included sources target GNOME Shell 51. Other versions and dock extensions
 can use different selectors or override parts of the theme. The installer does
@@ -32,7 +54,8 @@ not install extensions, select a Shell theme or replace GDM's login-screen theme
 ## 3. Select the GTK theme
 
 In **GNOME Tweaks → Appearance → Legacy Applications**, select
-**Viparu**. The setting's name can vary with the desktop version.
+**Viparu-Nile-Blue** or **Viparu-Brown**, matching your Shell selection.
+The setting's name can vary with the desktop version.
 This selects the ordinary GTK theme, including GTK 3 and GTK 4 applications that
 honor the theme setting.
 
@@ -41,7 +64,8 @@ only this setting is changed. Use the separate step below to style them too.
 
 ## 4. Enable the GTK 4/libadwaita user layer
 
-Open a terminal in `~/.themes/Viparu/` and run:
+Open a terminal in the chosen directory, for example `~/.themes/Viparu-Nile-Blue/`,
+and run:
 
 ```sh
 ./install-gtk.sh
@@ -131,7 +155,35 @@ light and dark requests; a separate fully dark variant is not provided.
 
 Do not discard the installer's state or original backups during an update.
 
-## Removing or switching themes
+## Switching variants or migrating from Viparu
+
+**There is no single switch for all components.** Copy the built standalone
+folder or extract its release archive into `~/.themes/`, keeping the exact
+`Viparu-Nile-Blue/` or `Viparu-Brown/` folder name. Select the destination's
+**Legacy Applications** and **Shell** themes separately in Tweaks (Shell needs
+User Themes). For the libadwaita user layer, explicitly run the installer from
+**inside that destination directory** (for example `~/.themes/Viparu-Brown/`):
+
+```sh
+./install-gtk.sh --update
+```
+
+The unchanged `install-gtk.sh` uses shared `viparu` ownership/backup state across
+both variants and the old theme. This retargets links or refreshes copies while
+retaining the current link/copy mode and original pre-Viparu backups; do not
+uninstall first or rename the state directory. Select the matching **Legacy
+Applications** and **Shell** themes separately in Tweaks, then restart applications.
+
+Existing `Viparu` users can keep their original directory while migrating and
+select the new names. No desktop settings are changed automatically.
+
+Each extracted archive contains its own plain `theme-variant` file.
+`python3 -B scripts/build-theme.py` rebuilds that selected local theme, preserving
+its identity and colors (`nile-blue` is the checkout default). The `--variants`
+and `--variant ID` options build standalone copies instead of switching this local
+selection; see [the development guide](DEVELOPMENT.md) for builds and packaging.
+
+## Removing or switching to an unrelated theme
 
 From the theme directory, run:
 

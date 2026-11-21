@@ -1,0 +1,20 @@
+{
+  "nile-blue": {
+    "name": "Viparu-Nile-Blue",
+    "sidebar_base": "chathams_blue",
+    "sidebar_hover": "silk_blue"
+  },
+  "brown": {
+    "name": "Viparu-Brown",
+    "sidebar_base": "cocoa",
+    "sidebar_tint": "rose_taupe",
+    "sidebar_hover": "bronco",
+    "shell_accent": "tulip_tree",
+    "shell_toggle_bg": "tulip_tree",
+    "shell_toggle_fg": "chathams_blue",
+    "shell_toggle_focus_fg": "brownish_red",
+    "sidebar_selection": "tulip_tree",
+    "swap_content_surfaces": true,
+    "gtk_accent": "ocean"
+  }
+}

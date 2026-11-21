@@ -211,7 +211,7 @@ placessidebar row, stacksidebar row {
     outline-offset: -2px;
   }
   &:selected, &:selected:backdrop {
-    background-color: $gp-selection-bg;
+    background-color: $gp-sidebar-selection-bg;
     color: $gp-selection-fg;
     box-shadow: none;
     label, image { color: inherit; }

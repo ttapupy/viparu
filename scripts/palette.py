@@ -42,9 +42,9 @@ def render_palette(source):
     return "\n".join(lines) + "\n"
 
 
-def generate(check=False):
-    output = ROOT / "color-palette.scss"
-    content = render_palette((ROOT / "color-palette.json").read_text(encoding="utf-8"))
+def generate(check=False, *, root=ROOT):
+    output = root / "color-palette.scss"
+    content = render_palette((root / "color-palette.json").read_text(encoding="utf-8"))
     if check:
         if not output.is_file() or output.read_text(encoding="utf-8") != content:
             raise ValueError("color-palette.scss is stale; run python3 scripts/palette.py")

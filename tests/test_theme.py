@@ -30,23 +30,32 @@ class ThemeTests(unittest.TestCase):
                 assert named is not None and variable is not None
                 self.assertEqual(named.group(1).lower(), variable.group(1).lower())
 
-    def test_window_background_matches_unchanged_file_view(self):
+    def test_view_and_card_exports_follow_selected_content_surfaces(self):
         colors = json.loads((ROOT / "color-palette.json").read_text(encoding="utf-8"))
         channels = [
             round(0.6 * int(colors["white"][offset:offset + 2], 16)
                   + 0.4 * int(colors["linen"][offset:offset + 2], 16))
             for offset in (1, 3, 5)
         ]
-        expected = "#{:02x}{:02x}{:02x}".format(*channels)
+        pale = "#{:02x}{:02x}{:02x}".format(*channels)
+        key = (ROOT / "theme-variant").read_text(encoding="utf-8").strip()
+        definition = json.loads((ROOT / "theme-variants.json").read_text(encoding="utf-8"))[key]
+        swapped = definition.get("swap_content_surfaces", False)
+        view = colors["linen"].lower() if swapped else pale
+        card = pale if swapped else colors["linen"].lower()
+        exports = {role: view for role in
+                   ("window_bg_color", "view_bg_color", "dialog_bg_color", "popover_bg_color")}
+        exports["card_bg_color"] = card
         for name in ("gtk.css", "gtk-dark.css", "libadwaita.css"):
             css = (GTK / name).read_text(encoding="utf-8")
-            for role in ("window_bg_color", "view_bg_color", "dialog_bg_color", "popover_bg_color"):
+            for role, expected in exports.items():
                 with self.subTest(stylesheet=name, role=role):
                     match = re.search(r"@define-color " + role + r" ([^;]+);", css)
                     self.assertIsNotNone(match)
                     assert match is not None
                     self.assertEqual(match.group(1).lower(), expected)
-            for role in ("window-bg-color", "view-bg-color", "dialog-bg-color", "popover-bg-color"):
+            for named_role, expected in exports.items():
+                role = named_role.replace("_", "-")
                 with self.subTest(stylesheet=name, variable=role):
                     match = re.search(r"--" + role + r": ([^;]+);", css)
                     self.assertIsNotNone(match)
